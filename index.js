@@ -18,7 +18,10 @@ function addToList(event){
         console.log(todoinput.value);
         
         //todo-div
-        const tododiv = document.createElement('div');
+        const todomaindiv = document.createElement('div');
+        todomaindiv.classList.add('todo-main');
+
+        const  tododiv = document.createElement('div');
         tododiv.classList.add('todo');
 
         //li-item
@@ -50,7 +53,9 @@ function addToList(event){
         trash.innerHTML = '<i class="fas fa-trash"></i>';
         tododiv.appendChild(trash);
 
-        ulelement.appendChild(tododiv);
+        todomaindiv.appendChild(tododiv);
+
+        ulelement.appendChild(todomaindiv);
     }
     todoinput.value = "";
 }
@@ -60,7 +65,8 @@ function doRequired(event){
     const targetitem = event.target;
 
     if(targetitem.classList[0] === 'trash-button'){
-        targetitem.parentElement.remove();
+        const ancestor = targetitem.parentElement.parentElement;
+        ancestor.remove();
     }
 
     else if(targetitem.classList[0] === 'add-button'){
@@ -70,11 +76,12 @@ function doRequired(event){
         
                 const parent = targetitem.parentElement;
 
-                console.log(parent);
+                console.log(parent.parentElement);
 
-                const brk = document.createElement('br');
+                const ancestor =  parent.parentElement;
 
-                parent.appendChild(brk);
+                //const brk = document.createElement('br');
+                //parent.appendChild(brk);
 
                 //div item
                 const tododiv = document.createElement('div');
@@ -87,7 +94,7 @@ function doRequired(event){
 
                 tododiv.appendChild(todoli);
             
-                parent.appendChild(tododiv);
+                ancestor.appendChild(tododiv);
 
         }
     }
