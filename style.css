@@ -1,0 +1,142 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: linear-gradient(120deg, #f3ce53,#fc9376);
+    color: rgb(255, 255, 255);
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+}
+
+.header-container{
+    margin-top: 5vh;
+    font-size: 1.4rem;
+}
+.header-container i{
+    padding-left: 0.7vw;
+    padding-top: 0.2vw;
+    font-size: 2rem;
+    border: none;    
+}
+
+.header-container i:hover{
+    color: #333;
+    box-shadow:  4px 4px 2px #fff56a;
+    background-color: #f3b461 ;
+    border: none;
+}
+
+header,form{
+    min-height: 20vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+form input,form button{
+    outline: none !important;
+    padding: 0.5rem;
+    font-size: 2rem;
+    border: none;
+    background:white;
+}
+
+form input[type=text]{
+    color: rgb(82, 80, 80);
+}
+
+form button{
+    color: #f3b461 ;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+form button:hover{
+    background: #f8a100 ;
+    color: white;   
+}
+
+form button:focus{
+    cursor: pointer;
+    border-radius: 0px;
+}
+
+form button:active{
+    transform: scale(0.75);
+}
+
+.todo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-list{
+    min-width: 35%;
+    list-style: none;
+}
+
+.todo{
+    margin: 0.5rem;
+    background:white;
+    color: black;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border:none;
+}
+
+.todo li{
+    flex: 1;
+}
+
+.todo-item{
+    padding: 0rem 0.5rem;
+    color: rgb(107, 107, 107);
+}
+
+.checked-button,.trash-button,.add-button{
+    background: #ff6f47;
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    outline: none !important;
+    transition: all 0.3s ease;
+}
+
+.trash-button:active{
+    transform: scale(0.75);
+    color: #ff6f47;
+    background: #fff;
+}
+
+.checked-button{
+    background: yellowgreen;
+}
+
+.checked-button:active{
+    transform: scale(0.75);
+    background: white;
+    color: yellowgreen;
+}
+
+.add-button{
+    background: #f8a100;
+}
+
+.add-button:active{
+    transform: scale(0.75);
+    background: white;
+    color: #f8a100;
+}
+
+
+.fa-trash,.fa-check-square,.fa-plus-square{
+    pointer-events: none;
+}
