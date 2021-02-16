@@ -87,6 +87,11 @@ function doRequired(event){
                 const tododiv = document.createElement('div');
                 tododiv.classList.add('todo-sub');
 
+                //image item
+                const img = document.createElement('img');
+                img.src = 'arrowholo.svg';
+                tododiv.appendChild(img);
+
                 //li-item
                 const todoli = document.createElement('li');
                 todoli.classList.add('todo-sub-item');

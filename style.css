@@ -142,7 +142,12 @@ form button:active{
 }
 
 .todo-sub{
-    margin: 1.3rem;
+    display: flex;
+    margin-left: 2rem;
+}
+
+.todo-sub-item{
+    margin: 0.5rem 1.3rem 0.5rem 0.3rem;
     padding-left: 1rem;
     padding-bottom: 0.9rem;
     background:linear-gradient(90deg,rgb(66, 65, 65),#aaa);
@@ -153,13 +158,27 @@ form button:active{
     justify-content: space-between;
     align-items: center;
     border:none;
+    min-width: 90%;
 }
 
-.todo-sub:hover{
+.todo-sub-item:hover{
     background:linear-gradient(90deg,#aaa,rgb(66, 65, 65));
     color: rgb(255, 255, 255);
 }
 
 .todo-sub li{
     line-height: 1rem;
+}
+
+.todo-sub img{
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.2rem;
+    padding-left: 5px;
+    height: 1.5rem;
+    width: 1.6rem;
+    color: #aaa;
+}
+.todo-sub img:hover{
+    background-color: rgb(218, 115, 115);
 }
