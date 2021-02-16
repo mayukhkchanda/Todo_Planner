@@ -88,6 +88,7 @@ form button:active{
     justify-content: space-between;
     align-items: center;
     border:none;
+    transition: all 0.5s ease;
 }
 
 .todo li{
@@ -160,6 +161,7 @@ form button:active{
 .todo-sub{
     display: flex;
     margin-left: 2rem;
+    transition: all 0.5s ease;
 }
 
 .todo-sub-item{
@@ -221,6 +223,11 @@ form button:active{
     color: #ff6f47;
     background: #fff;
 }
+.sub-trash-button:active{
+    transform: scale(0.75);
+    color: #ff6f47;
+    background: #fff;
+}
 
 .sub-checked-button{
     background: #a7db5a;
@@ -230,4 +237,16 @@ form button:active{
 .sub-checked-button:hover{
     color: #b7f856;
     background: #223603;
+}
+
+.sub-checked-button:active{
+    transform: scale(0.75);
+    color: #b7f856;
+    background: #223603;
+}
+
+.completed{
+    text-decoration: line-through;
+    color: #333;
+    opacity: 0.5;
 }

@@ -118,8 +118,69 @@ function doRequired(event){
     else if(targetitem.classList[0] === 'sub-trash-button'){
         console.log(targetitem.parentElement);
         targetitem.parentElement.remove();
+    }  
+    else if(targetitem.classList[0] === 'checked-button' ){
+        const subtodo = targetitem.parentElement;
+        subtodo.classList.toggle ('completed');
+
+        markAllSubToDoCompleted(subtodo.parentElement);
     }
 
+    else if( targetitem.classList[0] === 'sub-checked-button' ){
+        const subtodo = targetitem.parentElement;
+        subtodo.classList.toggle ('completed');
+
+        let bool =  checkAllSubTodoDone(subtodo.parentElement);
+        if(bool){
+            console.log(subtodo.parentElement);
+            const maintodo = subtodo.parentElement;
+            maintodo.childNodes[0].classList.add('completed');
+        }else {
+            const maintodo = subtodo.parentElement;
+            maintodo.childNodes[0].classList.remove('completed');
+        }
+    }
+
+}
+
+function markAllSubToDoCompleted(target){
+    const childtodos = target.childNodes
+    for(let i=1;i<childtodos.length;i++){
+        //console.log("this->>>");
+        //console.log(childtodos[i].classList[1]);
+        childtodos[i].classList.toggle('completed');
+    }
+}
+
+function checkAllSubTodoDone(target){
+    console.log(target);
+    //get all the children of todo-main div
+    const childtodos = target.childNodes
+
+    //check if all the sub-todo's are checked
+    if(checkCompleted(childtodos)){
+        console.log('all completed');
+        return true;
+    }else{
+        console.log('still remaining');
+        return false;
+    }
+}
+
+function checkCompleted(childtodos){
+    let bool = false;
+    for(let i=1;i<childtodos.length;i++){
+        /*if(!childtodos[i].classList[0] === 'completed'){
+            bool =  false;
+        }*/
+        console.log("this->>>");
+        console.log(childtodos[i].classList[1]);
+        if(!childtodos[i].classList[1] ){
+            return false;
+        }
+    }
+    //if()
+    return true;
 }
 
 /*
