@@ -96,12 +96,28 @@ function doRequired(event){
                 const todoli = document.createElement('li');
                 todoli.classList.add('todo-sub-item');
                 todoli.innerHTML = `<br>${subtask}<br>`;
-
                 tododiv.appendChild(todoli);
-            
+
+                //check button
+                const checked = document.createElement('button');
+                checked.classList.add('sub-checked-button');
+                checked.innerHTML = '<i class="fas fa-check-square"></i>';
+                tododiv.appendChild(checked)
+
+                //trash button
+                const trash = document.createElement('button');
+                trash.classList.add('sub-trash-button');
+                trash.innerHTML = '<i class="fas fa-trash"></i>';
+                tododiv.appendChild(trash);
+
                 ancestor.appendChild(tododiv);
 
         }
+    }
+
+    else if(targetitem.classList[0] === 'sub-trash-button'){
+        console.log(targetitem.parentElement);
+        targetitem.parentElement.remove();
     }
 
 }
