@@ -250,3 +250,19 @@ form button:active{
     color: #333;
     opacity: 0.5;
 }
+
+.completed button{
+    color: #bbb;
+    background: #5f5f5f;
+    opacity: 0.5;
+}
+.completed .trash-button{
+    background: #df775a;
+    color: #fff;
+    opacity: 1;
+}
+.completed .sub-trash-button{
+    background: #df775a;
+    color: #fff;
+    opacity: 1;
+}

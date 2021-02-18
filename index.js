@@ -123,7 +123,20 @@ function doRequired(event){
         const subtodo = targetitem.parentElement;
         subtodo.classList.toggle ('completed');
 
-        markAllSubToDoCompleted(subtodo.parentElement);
+        if(subtodo.classList[1] === 'completed'){
+            markAllSubToDoCompleted(subtodo.parentElement);
+            const maintodo = subtodo.parentElement.childNodes[0];
+            const buttons = maintodo.getElementsByTagName('button');
+            //console.log(buttons);
+            makeButtonDisabled(buttons);
+        }
+        else  {  
+            markUncompleted(subtodo.parentElement);
+            const maintodo = subtodo.parentElement.childNodes[0];
+            const buttons = maintodo.getElementsByTagName('button');
+            //console.log('this',buttons);
+            makeButtonEnabled(buttons);
+        }
     }
 
     else if( targetitem.classList[0] === 'sub-checked-button' ){
@@ -135,23 +148,58 @@ function doRequired(event){
             console.log(subtodo.parentElement);
             const maintodo = subtodo.parentElement;
             maintodo.childNodes[0].classList.add('completed');
+            makeButtonDisabled(maintodo.getElementsByTagName('button'));
         }else {
             const maintodo = subtodo.parentElement;
             maintodo.childNodes[0].classList.remove('completed');
+            makeButtonEnabled(maintodo.getElementsByTagName('button'));
         }
     }
 
 }
 
+//make add button enabled
+function makeButtonEnabled(buttons){
+    for(let i=0;i<buttons.length;i++){
+        if(buttons[i].classList[0] === 'add-button'){
+            buttons[i].disabled = false;
+            //console.log("fuck")
+        }
+    }
+}
+
+//make add button disable
+function makeButtonDisabled(buttons){
+    for(let i=0;i<buttons.length;i++){
+        if(buttons[i].classList[0] === 'add-button'){
+            buttons[i].disabled = true;
+        }
+    }
+}
+
+//mark the sub-todos uncompleted when main todo uncompleted
+function markUncompleted(target){
+    const childtodos = target.childNodes
+    for(let i=1;i<childtodos.length;i++){
+        //console.log("this->>>");
+        //console.log(childtodos[i].classList[1]);
+        if(childtodos[i].classList[1])
+            childtodos[i].classList.remove('completed');
+    }
+}
+
+//mark the sub-todos completed when main todo completed
 function markAllSubToDoCompleted(target){
     const childtodos = target.childNodes
     for(let i=1;i<childtodos.length;i++){
         //console.log("this->>>");
         //console.log(childtodos[i].classList[1]);
-        childtodos[i].classList.toggle('completed');
+        //if(!childtodos[i].classList[1])
+            childtodos[i].classList.add('completed');
     }
 }
 
+//delegates the call to checkCompleted
 function checkAllSubTodoDone(target){
     console.log(target);
     //get all the children of todo-main div
@@ -167,14 +215,15 @@ function checkAllSubTodoDone(target){
     }
 }
 
+//check if sub-todos are completed
 function checkCompleted(childtodos){
     let bool = false;
     for(let i=1;i<childtodos.length;i++){
         /*if(!childtodos[i].classList[0] === 'completed'){
             bool =  false;
         }*/
-        console.log("this->>>");
-        console.log(childtodos[i].classList[1]);
+        //console.log("this->>>");
+        //console.log(childtodos[i].classList[1]);
         if(!childtodos[i].classList[1] ){
             return false;
         }
