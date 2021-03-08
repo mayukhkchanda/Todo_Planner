@@ -92,6 +92,11 @@ form button:active{
     transition: all 0.5s ease;
 }
 
+.todo-input-empty{
+     
+    box-shadow: 0 0 4.5px #c90404 inset !important;
+}
+
 .todo li{
     flex: 1;
 }
