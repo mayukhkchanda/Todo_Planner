@@ -5,7 +5,7 @@
 }
 
 body{
-    background-image: linear-gradient(120deg, #f3ce53,#fc9376);
+    background-image: linear-gradient(120deg, #f1c42f,#fa6e47);
     color: rgb(255, 255, 255);
     font-family: 'Roboto', sans-serif;
     min-height: 100vh;
@@ -46,6 +46,7 @@ form input,form button{
 
 form input[type=text]{
     color: rgb(82, 80, 80);
+    transition: all 0.3s ease;
 }
 
 form button{
@@ -154,7 +155,8 @@ form button:active{
 }
 
 
-.fa-trash,.fa-check-square,.fa-plus-square{
+.fa-trash,.fa-check-square,
+.fa-plus-square,.fa-calendar-alt{
     pointer-events: none;
 }
 
@@ -266,3 +268,12 @@ form button:active{
     color: #fff;
     opacity: 1;
 }
+
+#datepicker{
+    padding-left: 1rem;
+    padding-right: 0rem;
+}
+
+/* *{
+    color : ;
+} */
