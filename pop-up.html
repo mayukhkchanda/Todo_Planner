@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="popupstyle.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="clickme">
+        <button id="showprompt">
+            <i class="fas fa-plus-square"></i>
+        </button>
+    </div>
+
+    <div class="bl-box bl-hidden">
+        <div class="bl-overlay"></div>
+        <div class="bl-dialog bl-info">
+            <div class="bl-header"><h2>But before,I need to...</h2></div>
+            <div class="bl-content">
+               <!--  <p class="bl-hidden">You entered nothing</p> -->
+                <input class="bl-prompt">
+            </div>
+            <div class="bl-footer">
+                <button class="bl-btn">OK</button>
+                <button class="bl-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    <!-- <script src="index.js"></script> -->
+
+    <script>
+        $(function() {
+            //show prompt 
+            $('#showprompt').click(function(){
+                $('div[class^="bl-box"]').toggleClass('bl-hidden');
+               /* $('div[class^="bl-box"]').fadeIn(1000); */
+            });
+
+            //ok button
+            $('.bl-footer>button:first-child').click(function(){
+                var inputval = $('.bl-prompt').val();
+                if(inputval){
+                    $('div[class^="bl-box"]').toggleClass('bl-hidden');
+
+                    console.log(inputval);
+
+                    $('.bl-prompt').val('');
+                }else{
+                   /*  $('.bl-prompt').css({
+                        'box-shadow':'0 0 3px 0px #811',
+                    }); */
+                    $('.bl-prompt').addClass('bl-empty');
+                }
+            });
+
+            $('.bl-prompt').focus(function(){
+                $(this).removeClass('bl-empty');
+            });
+
+            $('.bl-prompt').blur(function(){
+                $(this).removeClass('bl-empty');
+            });
+
+            //cancel button
+            $('.bl-footer>button:last-child').click(function(){
+                $('div[class^="bl-box"]').toggleClass('bl-hidden');
+                $('.bl-prompt').removeClass('bl-empty');
+            });
+
+        })
+    </script>
+
+</body>
+</html>

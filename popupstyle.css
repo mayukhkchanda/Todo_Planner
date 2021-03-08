@@ -1,0 +1,173 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+body{
+    background: #fa6f1ff3;
+} */
+
+.bl-box{
+    color: #535151;
+}
+
+.bl-overlay{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.5;
+    z-index: 10000;
+    text-align: left;
+}
+
+.bl-info{
+    box-shadow: 0px 2px 5px 5px #333;
+    width: 480px;
+    margin-left: -240px;
+    min-height: 100px;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    z-index: 10001;
+    background-color: #fff;
+    opacity: 1;
+    text-align: center;
+    border-top: 8px solid #1CD17A;
+}
+
+.bl-prompt{
+    padding: 4px 4px 15px 4px;
+    font-size: 3em;
+    text-align: center;
+    width: 90%;
+    font-family: monospace;
+    font-weight: bold;
+    border: 0px;
+    outline: none;
+    color: #666;
+}
+
+.bl-prompt input{
+    text-rendering: auto;
+    /* color: -internal-light-dark(black, white); */
+    outline: none;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+    font-size: 2.5rem;
+    /* -webkit-rtl-ordering: logical; */
+    cursor: text;
+   /*  margin: 50px 0px; */
+}
+
+.bl-header h2{
+   /*  margin: 0px; */
+   font-weight: normal;
+    padding: 0px 0px 20px 0px;
+    font-size: 2.5em;
+    line-height: 1em;
+    margin-block-start: 0.63em;
+    margin-block-end: 0.63em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    border-bottom: 1px solid #F0F0F0
+}
+
+.bl-content{
+    padding: 15px 0px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.bl-footer{
+    margin: 18px 10px;
+    text-align: center;
+}
+
+.bl-box button{
+    background-color: #1CD17A;
+    color: white;
+    padding: 9px 20px;
+    min-width: 70px;
+    border-radius: 0px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border: 1px solid transparent;
+    margin-right: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 0px 50px;/* 
+    transition: all 0.3s ease; */
+}
+
+.bl-box button:focus{
+    outline: none;
+    /* box-shadow: 3px 3px 3px #666; */
+}
+
+.bl-box button:active{
+    outline: none;
+    transform: scale(0.95);
+    /* box-shadow: 3px 3px 3px #666; */
+}
+
+.bl-box button:hover{
+    box-shadow: 3px 3px 3px #666;
+    background-color: #179607e8;
+    color: #fff;
+}
+
+.bl-empty{
+    box-shadow : 0 0 3px 0px #cc1818;
+}
+
+.bl-dialog-anim-show{
+    animation: fadeInAnim 0.3s;
+}
+
+.bl-hidden{
+    display: none;
+}
+
+.clickme{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+}
+
+#showprompt{
+    
+    padding: 1rem 1.2rem 1rem 1.2rem;
+    outline: none;
+    border: none;
+    background: #fff;
+    color: #ff8e32;
+    box-sizing: border-box;
+    justify-content: center;
+    align-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    
+}
+
+#showprompt:hover{
+    background: #ff8e32;
+    color: #fff;
+    box-shadow: 0 0 4px 1px #333;
+}
+
+.fa-plus-square{
+    pointer-events: none;
+}
+
