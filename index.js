@@ -251,6 +251,49 @@ function doRequired(event){
         }
     }
 
+    else if(targetitem.classList[0] === 'dropdown-button'){
+
+        const ancestor = targetitem.parentElement.parentElement;
+
+        /* console.log(targetitem); */
+        const childIcon = $(targetitem).children();
+       /*  console.log(childIcon); */
+       
+
+       //rotate the icon 
+      /*  $(childIcon).toggleClass('dropdown-button-rotate'); */
+
+      /* rotateChildIcon(childIcon[0]); */
+
+      toggleShowSubTodos(ancestor,childIcon);
+
+    }
+
+}
+
+//rotate child icon
+function rotateChildIcon(childIcon){
+    /* console.log(childIcon); */
+    if(childIcon.classList[2] == 'dropdown-button-rotate-down'){
+        childIcon.classList.remove('dropdown-button-rotate-down');
+        childIcon.classList.add('dropdown-button-rotate-up');
+    }else{
+        childIcon.classList.remove('dropdown-button-rotate-up');
+        childIcon.classList.add('dropdown-button-rotate-down');
+    }
+}
+
+//toggle slide the sub todos
+function toggleShowSubTodos(ancestor,childIcon) {
+   /*  console.log(ancestor); */
+    var childrens = $(ancestor).children().not('.todo');
+
+    if(childrens.length){
+
+        rotateChildIcon(childIcon[0]);
+        $(childrens).slideToggle(600,'linear');
+    
+    }
 }
 
 //delete sub todo- sub-todo trash button clicked
@@ -259,7 +302,6 @@ function deleteSubTodo(element) {
         element.remove();
     });
 }
-
 
 //delete the div- todo-main trash button clicked
 function deleteMainTodo( ancestor){
@@ -291,7 +333,6 @@ function deleteMainTodo( ancestor){
     }
 }
 
-
 //get the main todo div
 function getMainTodoDiv(){
     //todo-div
@@ -318,6 +359,12 @@ function getMainTodoDiv(){
     checked.classList.add('checked-button');
     checked.innerHTML = '<i class="fas fa-check-square"></i>';
     tododiv.appendChild(checked)
+
+    //add dropdown button
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.classList.add('dropdown-button');
+    dropdownBtn.innerHTML = '<i class="fas fa-caret-down dropdown-button-rotate-down"></i>';
+    tododiv.appendChild(dropdownBtn);
 
     //trash button
     const trash = document.createElement('button');

@@ -166,9 +166,42 @@ form button:active{
     color: #f8a100;
 }
 
+.dropdown-button{
+    outline: none;
+    border: none;
+    padding: 0.15rem 0.65rem;
+    font-size: 3rem;
+    color: #fff;
+    background: #09edf5ce;
+    transition: all 0.3s ease;
+    
+}
+
+.dropdown-button:hover{
+    background: #098bf5;
+    color: #09edf5ce;
+    transition: all 0.3s ease;
+}
+
+.dropdown-button:active{
+    background: #fff;
+    color: #09edf5be;
+    transform: scale(0.9);
+}
+
+.dropdown-button-rotate-up{
+    transition: all 0.4s ease;
+    transform: rotate(180deg) ;
+}
+
+.dropdown-button-rotate-down{
+    transition: all 0.4s ease;
+    transform: rotate(0deg);
+}
 
 .fa-trash,.fa-check-square,
-.fa-plus-square,.fa-calendar-alt{
+.fa-plus-square,.fa-calendar-alt,
+.fa-caret-down{
     pointer-events: none;
 }
 
