@@ -97,7 +97,7 @@ form button:active{
 } */
 
 .todo-input-empty{
-    box-shadow: 0 0 4.5px #c90404 inset !important;
+    box-shadow: 0 0 5px 1px #ff0000 !important;
 }
 
 .todo li{
@@ -326,6 +326,7 @@ form button:active{
 #datepicker{
     padding-left: 1rem;
     padding-right: 0rem;
+    margin: 0px 1rem;
 }
 
 /* *{
