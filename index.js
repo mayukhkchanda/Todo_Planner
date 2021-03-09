@@ -25,6 +25,7 @@ ulelement.addEventListener('click',doRequired);
 //initializing the datepicker
 $(calendar).datepicker({minDate:0});
 
+//opening the date picker on calendar button click
 $(calendarBtn).click(function(){
     $(calendar).stop().focus();
 });
@@ -34,6 +35,36 @@ $(todoinput).blur(removeBoxShadow);
 
 $(calendar).focus(addBoxShadow);
 $(calendar).blur(removeBoxShadow);
+
+
+$(subtodoinput).focus(function(){
+    $(this).removeClass('bl-empty');
+});
+
+$(subtodoinput).blur(function(){
+    $(this).removeClass('bl-empty');
+});
+
+
+//cancel button
+$(subtodocancelbtn).click(function(){
+    $(subtododiv).toggleClass('bl-hidden');
+    $(subtodoinput).removeClass('bl-empty');
+    $(subtodoinput).val('');  
+    
+    //subtodookbtn.removeEventListener('click',fucker);
+    //$(subtodookbtn).off('click');
+
+
+    //work around to remove the event listener
+    //else it will keep adding to the already registered eventListener
+    var clone = $(subtodookbtn).clone();
+
+    $(subtodookbtn).replaceWith(clone);
+
+    //$(subtodocancelbtn).before(clone);
+});
+
 
 //adding box shadow
 function addBoxShadow(event) {
@@ -78,7 +109,13 @@ function addToList(event){
     
         const todomaindiv = getMainTodoDiv();
 
+        //fading hiding the todo main div
+        $(todomaindiv).hide();
+
         ulelement.appendChild(todomaindiv);
+
+        //fading the new todo main div into view
+        $(todomaindiv).fadeIn(400);
 
         //reseting the value of input and calendar
         //only if both have value
@@ -98,23 +135,21 @@ function addToList(event){
     }
 }
 
-
-
 //do execute the required code
 //for handling the subtodo
 function doRequired(event){
     //event.preventDefault();
 
-    console.log(event.target.classList[0]);
+    /* console.log(event.target.classList[0]); */
 
     var targetitem = event.target;
 
-    console.log('received V');
-    console.log(targetitem);
+    /* console.log('received V');
+    console.log(targetitem); */
 
     if(targetitem.classList[0] === 'trash-button'){
         const ancestor = targetitem.parentElement.parentElement;
-        ancestor.remove();
+        deleteMainTodo(ancestor);
     }
 
     else if(targetitem.classList[0] === 'add-button'){
@@ -123,56 +158,62 @@ function doRequired(event){
 
         //var subtask = window.prompt("Add new sub-todo?");
 
+        //making the subtodo input taking div appear
         $(subtododiv).toggleClass('bl-hidden');
+        
+        $(subtodoinput).focus();
 
         //$(subtodoinput).focus();
 
-        const willAddTo = event.target;
-        console.log(event.target);
+        /* const willAddTo = event.target;
+        console.log(event.target); */
 
-        var subtask = $(subtodoinput).val();
+        /* var subtask = $(subtodoinput).val(); */
         //OK button
         subtodookbtn.addEventListener( 'click', function fucker(event){
             event.preventDefault();
             var subtask = $(subtodoinput).val(); 
         
-        //Input present in the sub-todo div's input
-        if(subtask){
+            //Input present in the sub-todo div's input
+            if(subtask){
+                
+                //make the input taking div disappear
+                $(subtododiv).toggleClass('bl-hidden');
 
-            $(subtododiv).toggleClass('bl-hidden');
+                /* console.log(subtask); */
+                
+                const parent = targetitem.parentElement;
 
-            console.log(subtask);
-            
-            const parent = targetitem.parentElement;
-
-            console.log('willAddTo');
-            console.log(willAddTo);
-    
-            const ancestor =  parent.parentElement;
-    
-            var tododiv = getSubTodoDiv(subtask);
-    
-            ancestor.appendChild(tododiv);
-            
-            subtodoinput.value = '';
-
-            subtodookbtn.removeEventListener('click',fucker);
-        }
-           
-        //No input in the pop-up div 
-        else{               
-            $(subtodoinput).addClass('bl-empty');
-        }
-
-       }  );
-
+                /* console.log('willAddTo');
+                console.log(willAddTo); */
         
+                const ancestor =  parent.parentElement;
+        
+                var tododiv = getSubTodoDiv(subtask);
+                
+                ancestor.appendChild(tododiv);
+                
+                subtodoinput.value = '';
+
+                subtodookbtn.removeEventListener('click',fucker);
+            }
+            
+            //No input in the pop-up div 
+            else{               
+                $(subtodoinput).addClass('bl-empty');
+            }
+
+       } );
+
     } 
 
     else if(targetitem.classList[0] === 'sub-trash-button'){
        // console.log(targetitem.parentElement);
-        targetitem.parentElement.remove();
-    }  
+        //targetitem.parentElement.remove();
+        
+        deleteSubTodo(targetitem.parentElement);
+    } 
+
     else if(targetitem.classList[0] === 'checked-button' ){
         const subtodo = targetitem.parentElement;
         subtodo.classList.toggle ('completed');
@@ -212,35 +253,43 @@ function doRequired(event){
 
 }
 
-$(subtodoinput).focus(function(){
-    $(this).removeClass('bl-empty');
-});
+//delete sub todo- sub-todo trash button clicked
+function deleteSubTodo(element) {
+    $(element).fadeOut(400, function(){
+        element.remove();
+    });
+}
 
-$(subtodoinput).blur(function(){
-    $(this).removeClass('bl-empty');
-});
 
+//delete the div- todo-main trash button clicked
+function deleteMainTodo( ancestor){
 
-//cancel button
-$(subtodocancelbtn).click(function(){
-    $(subtododiv).toggleClass('bl-hidden');
-    $(subtodoinput).removeClass('bl-empty');
-    $(subtodoinput).val('');  
+    var childrens = $(ancestor).children().not('.todo');
+
+    //console.log(childrens);
+
+    if(childrens.length){
+        /* console.log('before slide up'); */
+        /* $(ancestor).children().not('.todo') */
+        $(childrens).slideUp(300,'linear',
+                function(){
+                    $(ancestor).fadeOut(400, function(){
+                        ancestor.remove();
+                    });
+                }        
+        );
+        
+    }else{
     
-    //subtodookbtn.removeEventListener('click',fucker);
-    //$(subtodookbtn).off('click');
+        /* console.log('before fade out'); */
+        $(ancestor).fadeOut(400, function(){
 
-
-    //work around to remove the event listener
-    //else it will keep adding to the already registered eventListener
-    var clone = $(subtodookbtn).clone();
-
-    $(subtodookbtn).replaceWith(clone);
-
-    //$(subtodocancelbtn).before(clone);
-});
-
-
+            /* console.log('before remove'); */
+            ancestor.remove();
+        }); 
+        
+    }
+}
 
 
 //get the main todo div
@@ -285,35 +334,34 @@ function getMainTodoDiv(){
 //create a subtodo div
 function getSubTodoDiv( subtask){
     
-        const tododiv = document.createElement('div');
-        tododiv.classList.add('todo-sub');
+    const tododiv = document.createElement('div');
+    tododiv.classList.add('todo-sub');
 
-        //image item
-        const img = document.createElement('img');
-        img.src = 'arrowholo.svg';
-        tododiv.appendChild(img);
+    //image item
+    const img = document.createElement('img');
+    img.src = 'arrowholo.svg';
+    tododiv.appendChild(img);
 
-        //li-item
-        const todoli = document.createElement('li');
-        todoli.classList.add('todo-sub-item');
-        todoli.innerHTML = `<br>${subtask.trim()}<br>`;
-        tododiv.appendChild(todoli);
+    //li-item
+    const todoli = document.createElement('li');
+    todoli.classList.add('todo-sub-item');
+    todoli.innerHTML = `<br>${subtask.trim()}<br>`;
+    tododiv.appendChild(todoli);
 
-        //check button
-        const checked = document.createElement('button');
-        checked.classList.add('sub-checked-button');
-        checked.innerHTML = '<i class="fas fa-check-square"></i>';
-        tododiv.appendChild(checked)
+    //check button
+    const checked = document.createElement('button');
+    checked.classList.add('sub-checked-button');
+    checked.innerHTML = '<i class="fas fa-check-square"></i>';
+    tododiv.appendChild(checked)
 
-        //trash button
-        const trash = document.createElement('button');
-        trash.classList.add('sub-trash-button');
-        trash.innerHTML = '<i class="fas fa-trash"></i>';
-        tododiv.appendChild(trash);
+    //trash button
+    const trash = document.createElement('button');
+    trash.classList.add('sub-trash-button');
+    trash.innerHTML = '<i class="fas fa-trash"></i>';
+    tododiv.appendChild(trash);
 
-        return tododiv;
+    return tododiv;
 }
-
 
 //make add button enabled
 function makeButtonEnabled(buttons){

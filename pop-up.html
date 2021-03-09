@@ -39,8 +39,21 @@
 
     <script>
         $(function() {
+
+
+            /* $('#showprompt').mouseenter(function(){
+                $('.fa-plus-square').addClass('fa-plus-square-rotate');
+            });
+
+            $('#showprompt').mouseleave(function(){
+                $('.fa-plus-square').removeClass('fa-plus-square-rotate');
+            }); */
+
             //show prompt 
             $('#showprompt').click(function(){
+
+                $('.fa-plus-square').toggleClass('fa-plus-square-rotate');
+
                 $('div[class^="bl-box"]').toggleClass('bl-hidden');
                /* $('div[class^="bl-box"]').fadeIn(1000); */
             });

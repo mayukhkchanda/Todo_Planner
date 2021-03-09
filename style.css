@@ -78,6 +78,7 @@ form button:active{
 .todo-list{
     min-width: 40%;
     list-style: none;
+    transition:  all 0.3s ease;
 }
 
 .todo{
@@ -91,9 +92,11 @@ form button:active{
     border:none;
     transition: all 0.5s ease;
 }
+/* .todo:hover{
+    background: #555;
+} */
 
 .todo-input-empty{
-     
     box-shadow: 0 0 4.5px #c90404 inset !important;
 }
 
@@ -101,9 +104,13 @@ form button:active{
     flex: 1;
 }
 
+/* .todo li:hover{
+    color: #eee;
+} */
+
 .todo-item{
     padding: 0rem 0.5rem;
-    color: rgb(107, 107, 107);
+    color: #6b6b6b;
 }
 
 .checked-button,.trash-button,.add-button{
@@ -175,8 +182,8 @@ form button:active{
     margin: 0.5rem 0px 0.5rem 0.3rem;
     padding-left: 1rem;
     padding-bottom: 0.9rem;
-    background:linear-gradient(90deg,rgb(66, 65, 65),#aaa);
-    color: rgb(230, 227, 227);
+    background: #fff ;/* linear-gradient(90deg,rgb(66, 65, 65),#aaa); */
+    color: #555;
     font-size: 1.2rem;
     font-family: 'Roboto', sans-serif;
     display: flex;
@@ -184,12 +191,16 @@ form button:active{
     align-items: center;
     border:none;
     min-width: 80%;
+    transition: all 0.3s ease;
 }
 
-.todo-sub-item:hover{
-    background:linear-gradient(90deg,#aaa,rgb(66, 65, 65));
+/* .todo-sub-item:hover{
+    background:linear-gradient(90deg,#aaa,#424141);
     color: rgb(255, 255, 255);
-}
+    color: #fff ;
+    background: #555;
+    box-shadow: 0px 2px 3px 2px #fff;
+} */
 
 .todo-sub li{
     line-height: 1rem;
@@ -203,11 +214,13 @@ form button:active{
     padding-left: 5px;
     height: 1.5rem;
     width: 1.6rem;
-    color: #aaa;
+    color: #eee;
 }
+
+/* 
 .todo-sub img:hover{
     background-color: rgb(218, 115, 115);
-}
+} */
 
 .sub-checked-button,.sub-trash-button{
     background: #ff6f47;
@@ -240,6 +253,9 @@ form button:active{
     background: #a7db5a;
 }
 
+.sub-todo-delete{
+    opacity: 0;
+}
 
 .sub-checked-button:hover{
     color: #b7f856;
