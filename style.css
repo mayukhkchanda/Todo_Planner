@@ -22,12 +22,12 @@ body{
     border: none;    
 }
 
-.header-container i:hover{
+/* .header-container i:hover{
     color: #333;
     box-shadow:  4px 4px 2px #fff56a;
     background-color: #f3b461 ;
     border: none;
-}
+} */
 
 header,form{
     min-height: 20vh;
@@ -46,7 +46,7 @@ form input,form button{
 
 form input[type=text]{
     color: rgb(82, 80, 80);
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
 }
 
 form button{
@@ -91,6 +91,18 @@ form button:active{
     align-items: center;
     border:none;
     transition: all 0.5s ease;
+}
+
+.todo-main{
+    display: initial;
+}
+
+/* .todo-input{
+    transition: all 0.8s ease;
+} */
+
+.todo-button{
+    margin: 0px 0px 0px 1rem;
 }
 /* .todo:hover{
     background: #555;
@@ -326,7 +338,62 @@ form button:active{
 #datepicker{
     padding-left: 1rem;
     padding-right: 0rem;
-    margin: 0px 1rem;
+    margin: 0px 0rem 0px 1rem;
+}
+
+
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance:  none;
+    outline: none;
+    border: none;
+}
+
+.select{
+    position: relative;
+}
+
+.select-filter{
+    margin: 0rem 1rem 0rem 1rem;
+    padding: 1rem 2rem 1rem 0.5rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #f1c42fdc;
+    transition: all 0.3s ease;
+}
+.select-filter-shadow{
+    box-shadow: 0 0 4px 2px #555;
+}
+
+.select::after{
+    content: "\25BC";
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0rem 0.5rem;
+    padding: 0.75rem 0.5rem 0.75rem 0.5rem; 
+    font-size: 1.5rem;
+    color: #f1c42f;
+    background: #fff;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.select:hover::after{
+    background: #f1c42f;
+    color: #fff;
+}
+
+.select-button{
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.select-button-up{
+    transform: rotate(180deg);
+}
+.select-button-down{
+    transform: rotate(0deg);
 }
 
 /* *{

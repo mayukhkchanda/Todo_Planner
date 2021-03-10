@@ -10,6 +10,8 @@ const ulelement = document.querySelector(".todo-list");
 const calendar = document.querySelector('#datepicker');
 const calendarBtn = document.querySelector('.todo-calendar');
 const addbutton = document.querySelector(".add-button");
+const selectBtn = document.querySelector("#select-dropdown-button");
+const selectFeild = document.querySelector(".select-filter");
 
 
 //sub-todo's feilds
@@ -21,6 +23,9 @@ const subtodocancelbtn = document.querySelector('.bl-footer>button:last-child');
 //Event listeners
 submitbutton.addEventListener('click',addToList);
 ulelement.addEventListener('click',doRequired);
+/* selectFeild.addEventListener('change',applyFilter); */
+
+$(selectFeild).change(applyFilter);
 
 //initializing the datepicker
 $(calendar).datepicker({minDate:0});
@@ -45,6 +50,20 @@ $(subtodoinput).blur(function(){
     $(this).removeClass('bl-empty');
 });
 
+$(selectFeild).click(function() {
+    
+    /* console.log(selectFeild); */
+
+    $(this).toggleClass('select-filter-shadow');
+});
+
+/* $(selectFeild).focus(function(){
+    selectFeild.classList.add('select-filter-shadow')
+});
+*/
+$(selectFeild).blur(function(){
+    selectFeild.classList.remove('select-filter-shadow')
+}); 
 
 //cancel button
 $(subtodocancelbtn).click(function(){
@@ -72,7 +91,7 @@ function addBoxShadow(event) {
     $(event.target).removeClass('todo-input-empty');
 
     $(event.target).css({
-        'box-shadow':'0 0 2.5px 0.5px #999 inset'
+        'box-shadow':'0 0 5px 1px #555' 
     });
 }
 
@@ -96,6 +115,60 @@ $('html').click(function(event){
 
 
 //functions
+
+//Apply the select filter
+function applyFilter(){
+    var selectValue = event.target.value;
+    /* console.log(selectValue); */
+    /* console.log($(ulelement).children());  */
+
+    var childTodos = ulelement.childNodes;
+    /* console.log(childTodos); */
+
+    childTodos.forEach( (c)=>{
+            /*console.log(c/* .childNodes[0] );*/
+            var child = c.childNodes[0];
+            
+            switch(selectValue){
+                case "all":         
+                        showTodo(c);
+                        break;
+                case "completed":   
+                        if(child.classList[1] === 'completed'){
+                            showTodo(c);;
+                        }else{
+                            hideTodo(c);
+                        }
+                        break;
+                case "uncompleted": 
+                        if(!(child.classList[1] === 'completed')){
+                            showTodo(c);
+                        }else{
+                            hideTodo(c);
+                        }
+                        break;
+                default: ;
+                    break;
+            }
+        }
+     );
+}
+
+//show the div received
+function showTodo(todo){
+    /* console.log('Show ->');
+    console.log(todo); */
+    $(todo).show();
+}
+
+//hide the div received
+function hideTodo(todo){
+    /* console.log('hide ->');
+    console.log(todo); */
+    $(todo).hide();
+}
+
+//add new todo to the Un-ordered list element
 function addToList(event){
 
     //prevent bubbling up of event
@@ -212,6 +285,14 @@ function doRequired(event){
         //targetitem.parentElement.remove();
         
         deleteSubTodo(targetitem.parentElement);
+
+       /*  let todoMainDiv = targetitem.parentElement.parentElement;
+        let isTrue =  checkAllSubTodoDone(todoMainDiv);
+        if(isTrue){
+            console.log('YeS!');
+        }else{
+            console.log('Get outta here!!');
+        } */
     } 
 
     else if(targetitem.classList[0] === 'checked-button' ){
@@ -259,8 +340,7 @@ function doRequired(event){
         const childIcon = $(targetitem).children();
        /*  console.log(childIcon); */
        
-
-       //rotate the icon 
+       //rotate the icon - deprecated. Rotate only when child elements present
       /*  $(childIcon).toggleClass('dropdown-button-rotate'); */
 
       /* rotateChildIcon(childIcon[0]); */
@@ -298,9 +378,34 @@ function toggleShowSubTodos(ancestor,childIcon) {
 
 //delete sub todo- sub-todo trash button clicked
 function deleteSubTodo(element) {
+
     $(element).fadeOut(400, function(){
+
+        //get the main todo element 
+        let todoMainDiv = element.parentElement;
+
+        //remove the sub-todo element
         element.remove();
+            
+            //check if the remaining sub-todo elements are completed or not
+            let isTrue =  checkAllSubTodoDone(todoMainDiv);
+            if(isTrue){
+                console.log('YeS!');
+                markMainTodoCompleteIfNot(todoMainDiv);
+
+                makeButtonDisabled(todoMainDiv.childNodes[0].getElementsByTagName('button'));
+            }else{
+                console.log('Get outta here!!');
+            }
     });
+}
+
+//mark the main todo complete if not already completed
+function markMainTodoCompleteIfNot(element) {
+    let mainTodoDiv = element.childNodes[0];
+    if(!(mainTodoDiv.classList[1] === 'completed')){
+        mainTodoDiv.classList.add('completed');
+    }
 }
 
 //delete the div- todo-main trash button clicked
