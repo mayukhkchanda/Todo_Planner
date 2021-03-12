@@ -224,6 +224,10 @@ function doRequired(event){
 
     if(targetitem.classList[0] === 'trash-button'){
         const ancestor = targetitem.parentElement.parentElement;
+
+        //delete from the session storage; targetitem is the button; its parent is the 'todo' div
+        deleteMainTodoFromSessionStorage(targetitem.parentElement.innerText);
+
         deleteMainTodo(ancestor);
     }
 
@@ -294,7 +298,12 @@ function doRequired(event){
     else if(targetitem.classList[0] === 'sub-trash-button'){
        // console.log(targetitem.parentElement);
         //targetitem.parentElement.remove();
-        
+
+        let __mainToDoDiv__ = targetitem.parentElement.parentElement.childNodes[0];
+
+        //delete the sub-todo from session storage
+        deleteSubTodoFromSessionStorage(targetitem.parentElement.innerText,__mainToDoDiv__.innerText);
+
         deleteSubTodo(targetitem.parentElement);
 
        /*  let todoMainDiv = targetitem.parentElement.parentElement;
@@ -381,6 +390,77 @@ function doRequired(event){
 
 }
 
+//delete todo from session storage
+function deleteSubTodoFromSessionStorage(__subTodoText__,__mainTodoText__) {
+    
+
+    __subTodoText__ = __subTodoText__.split('\n')[1];
+   /*  console.log(__subTodoText__+' '+__mainTodoText__); */
+
+    let __todo__ = __mainTodoText__.split(":")[0].trim();
+    let __deudate__ = __mainTodoText__.split(":")[1].trim();
+
+    let __TodosArr__ = checkSessionStorage();
+
+    let found = false;
+
+    for(let i=0;i<__TodosArr__.length;i++){
+
+        //if the sub todo is found then break out
+        if(found){
+            break;
+        }
+
+        // get the index which matches the todo
+        if((__TodosArr__[i].todo === __todo__) && (__TodosArr__[i].dueDate === __deudate__)){
+            
+            console.log(__TodosArr__[i]);
+
+            let __subTodoArr__= __TodosArr__[i].subTodos;
+
+            for(let j=0;j<__subTodoArr__.length;j++){
+
+                console.log(__subTodoArr__[j]);
+
+                //delete the sub todo present
+                if(__subTodoArr__[j]._subTodo === __subTodoText__){
+
+                    //delete the sub todo of i-th found main todo 
+                    __TodosArr__[i].subTodos.splice(j,1);
+
+                    found = true;
+
+                    break;
+                }
+
+            }
+
+        }
+    }
+
+    setSessionStorage(__TodosArr__); 
+}
+
+
+//delete todo from session storage
+function deleteMainTodoFromSessionStorage(__todoText__) {
+    console.log(__todoText__);
+
+    let __todo__ = __todoText__.split(":")[0].trim();
+    let __deudate__ = __todoText__.split(":")[1].trim();
+
+    let __TodosArr__ = checkSessionStorage();
+
+    for(let i=0;i<__TodosArr__.length;i++){
+        // get the index which matches the todo
+        if((__TodosArr__[i].todo === __todo__) && (__TodosArr__[i].dueDate === __deudate__)){
+            //delete the todo present
+            __TodosArr__.splice(i,1);
+        }
+    }
+    setSessionStorage(__TodosArr__);
+}
+
 //check if the drop down icon state is up or down
 function checkStateOfDropDownIcon(__todoDIV__) {
     /* console.log(__todoDIV__) */;
@@ -426,8 +506,17 @@ function setCheckStatusInSessionStorage(todoToBeMarked, status) {
 function setSubTodoStatus(sub,main,status){
     let __todos__ = checkSessionStorage();
 
-    sub = sub.split('\n')[1];
+    let _sub_ = sub.split('\n');
 
+    /* console.log(_sub_); */
+    for(const s of _sub_) {
+        if(s){
+           /*  console.log(s); */
+           sub = s.trim();
+        }
+    }
+
+    /* console.log(sub); */
     console.log(sub+" "+main+" "+status);
 
     let __todo__    = main.split(':')[0].trim();
@@ -480,8 +569,8 @@ function addMainTodoToSessionStorage() {
     let _TODO_ = checkSessionStorage() ;
 
     let _mainTodo = {
-        'todo'    : todoinput.value,
-        'dueDate' : calendar.value,
+        'todo'    : todoinput.value.trim(),
+        'dueDate' : calendar.value.trim(),
         'checked' : 'false',
         'subTodos': [] 
     }; 
@@ -556,7 +645,7 @@ function getTodosFromSessionStorage() {
 
 //adding the sub todo of a main todo to session storage
 function addSubTodoToSessionStorage(_ancestor_, _subTask_) {
-    let __todoText__ = _ancestor_.childNodes[0].innerText;
+    let __todoText__ = _ancestor_.childNodes[0].innerText.trim();
     //console.log(__todoText__);  
 
     let __todo__ = __todoText__.split(":")[0].trim();
@@ -565,7 +654,7 @@ function addSubTodoToSessionStorage(_ancestor_, _subTask_) {
     /* console.log(__todo__+" "+__deudate__);   */
 
     //saving the status of the sub todo
-    let subTodoObj =  { '_subTodo': _subTask_, '_checked':'false' };
+    let subTodoObj =  { '_subTodo': _subTask_.trim(), '_checked':'false' };
     let __TODOS__ = checkSessionStorage();
 
     for(let i=0;i<__TODOS__.length;i++){
@@ -622,11 +711,13 @@ function deleteSubTodo(element) {
             
             //check if the remaining sub-todo elements are completed or not
             let isTrue =  checkAllSubTodoDone(todoMainDiv);
+
             if(isTrue){
                 /* console.log('YeS!'); */
                 markMainTodoCompleteIfNot(todoMainDiv);
 
                 makeButtonDisabled(todoMainDiv.childNodes[0].getElementsByTagName('button'));
+                
             }else{
                 /* console.log('Get outta here!!'); */
             }
@@ -638,6 +729,7 @@ function markMainTodoCompleteIfNot(element) {
     let mainTodoDiv = element.childNodes[0];
     if(!(mainTodoDiv.classList[1] === 'completed')){
         mainTodoDiv.classList.add('completed');
+        setCheckStatusInSessionStorage(mainTodoDiv,'true');
     }
 }
 
