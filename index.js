@@ -23,8 +23,8 @@ const subtodocancelbtn = document.querySelector('.bl-footer>button:last-child');
 //Event listeners
 submitbutton.addEventListener('click',addToList);
 ulelement.addEventListener('click',doRequired);
+document.addEventListener("DOMContentLoaded", getTodosFromSessionStorage());
 /* selectFeild.addEventListener('change',applyFilter); */
-
 $(selectFeild).change(applyFilter);
 
 //initializing the datepicker
@@ -190,6 +190,8 @@ function addToList(event){
         //fading the new todo main div into view
         $(todomaindiv).fadeIn(400);
 
+        addMainTodoToSessionStorage();
+
         //reseting the value of input and calendar
         //only if both have value
         todoinput.value = "";
@@ -266,6 +268,8 @@ function doRequired(event){
                 
                 ancestor.appendChild(tododiv);
                 
+                addSubTodoToSessionStorage(ancestor,subtask);
+
                 subtodoinput.value = '';
 
                 subtodookbtn.removeEventListener('click',fucker);
@@ -351,6 +355,106 @@ function doRequired(event){
 
 }
 
+//check if todo already there in session storage
+function checkSessionStorage() {
+    let _todos_ ;
+    if( sessionStorage.getItem('allTodo') === null ){
+        _todos_ = [];
+    }
+    else {
+        _todos_ = JSON.parse( sessionStorage.getItem('allTodo') );
+    }
+    return _todos_;
+}
+
+//adding todos to session storage 
+function addMainTodoToSessionStorage() {
+    let _TODO_ = checkSessionStorage() ;
+
+    let _mainTodo = {
+        'todo'    : todoinput.value,
+        'dueDate' : calendar.value,
+        
+        'subTodos': [] 
+    }; 
+    
+    /* if( sessionStorage.getItem('allTodo') === null ){
+        _TODO_ = [];
+    }
+    else {
+        _TODO_ = JSON.parse( sessionStorage.getItem('allTodo') );
+    } */
+
+
+    _TODO_.push(_mainTodo);
+
+    sessionStorage.setItem('allTodo',JSON.stringify(_TODO_));
+
+}
+
+//getting todos from session storage
+function getTodosFromSessionStorage() {
+    let _TODO_ = checkSessionStorage();
+
+    //console.log(_TODO_);
+
+    _TODO_.forEach( (t) =>{ 
+
+        let _mainTodoDiv = getMainTodoDivFromSessionStorage(t.todo,t.dueDate);
+
+        //add subtodos to the main div; *if any*
+        if(t.subTodos.length > 0){
+            let _subTodos_ = t.subTodos;
+
+            //for each of the sub-todos; create a sub-todo div and append it to 
+            //as a child of  main todo
+            _subTodos_.forEach( ( s )=> {
+                    let _subTodoDiv_ = getSubTodoDiv(s);
+
+                    //append child
+                    _mainTodoDiv.appendChild(_subTodoDiv_);
+             } );
+
+        }
+        
+        //fading hiding the todo main div
+        $(_mainTodoDiv).hide();
+
+        ulelement.appendChild(_mainTodoDiv);
+
+        //fading the new todo main div into view
+        $(_mainTodoDiv).fadeIn(400);
+    } );
+}
+
+//adding the sub todo of a main todo to session storage
+function addSubTodoToSessionStorage(_ancestor_, _subTask_) {
+    let __todoText__ = _ancestor_.childNodes[0].innerText;
+    //console.log(__todoText__);  
+
+    let __todo__ = __todoText__.split(":")[0].trim();
+    let __deudate__ = __todoText__.split(":")[1].trim();
+
+    /* console.log(__todo__+" "+__deudate__);   */
+
+    let __TODOS__ = checkSessionStorage();
+
+    for(let i=0;i<__TODOS__.length;i++){
+        //console.log(arr[i].todo);
+    
+        if((__TODOS__[i].todo === __todo__) && (__TODOS__[i].dueDate === __deudate__)){
+           
+           /* console.log(__TODOS__[i].todo); */
+
+           __TODOS__[i].subTodos.push(_subTask_);
+            break;
+        }
+    }
+
+    sessionStorage.setItem('allTodo',JSON.stringify(__TODOS__));
+}
+
+
 //rotate child icon
 function rotateChildIcon(childIcon){
     /* console.log(childIcon); */
@@ -390,12 +494,12 @@ function deleteSubTodo(element) {
             //check if the remaining sub-todo elements are completed or not
             let isTrue =  checkAllSubTodoDone(todoMainDiv);
             if(isTrue){
-                console.log('YeS!');
+                /* console.log('YeS!'); */
                 markMainTodoCompleteIfNot(todoMainDiv);
 
                 makeButtonDisabled(todoMainDiv.childNodes[0].getElementsByTagName('button'));
             }else{
-                console.log('Get outta here!!');
+                /* console.log('Get outta here!!'); */
             }
     });
 }
@@ -482,6 +586,49 @@ function getMainTodoDiv(){
     return todomaindiv;
 }
 
+//create and return the main todo div; JS does not support function overloading
+function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
+    //todo-div
+    const todomaindiv = document.createElement('div');
+    todomaindiv.classList.add('todo-main');
+
+    const  tododiv = document.createElement('div');
+    tododiv.classList.add('todo');
+
+    //li-item
+    const todoli = document.createElement('li');
+    todoli.classList.add('todo-item');
+    todoli.innerText = todoValue.trim()+': '+calendarValue;
+    tododiv.appendChild(todoli);
+
+    //add sub-task plus icon
+    const add = document.createElement('button');
+    add.classList.add('add-button');
+    add.innerHTML= '<i class="fas fa-plus-square"></i>';
+    tododiv.appendChild(add);
+
+    //check button
+    const checked = document.createElement('button');
+    checked.classList.add('checked-button');
+    checked.innerHTML = '<i class="fas fa-check-square"></i>';
+    tododiv.appendChild(checked)
+
+    //add dropdown button
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.classList.add('dropdown-button');
+    dropdownBtn.innerHTML = '<i class="fas fa-caret-down dropdown-button-rotate-down"></i>';
+    tododiv.appendChild(dropdownBtn);
+
+    //trash button
+    const trash = document.createElement('button');
+    trash.classList.add('trash-button');
+    trash.innerHTML = '<i class="fas fa-trash"></i>';
+    tododiv.appendChild(trash);
+
+    todomaindiv.appendChild(tododiv);
+    
+    return todomaindiv;
+}
 
 //create a subtodo div
 function getSubTodoDiv( subtask){
