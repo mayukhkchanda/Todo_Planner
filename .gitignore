@@ -1,4 +1,4 @@
-*.svg
-*.png
 .vscode
 savingToSessionStorage.js
+node_modules/
+Reusable_Components/

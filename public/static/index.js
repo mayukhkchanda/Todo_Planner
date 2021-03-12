@@ -859,7 +859,7 @@ function getSubTodoDiv( subtask){
 
     //image item
     const img = document.createElement('img');
-    img.src = 'arrowholo.svg';
+    img.src = 'images/arrowholo.svg';
     tododiv.appendChild(img);
 
     //li-item
