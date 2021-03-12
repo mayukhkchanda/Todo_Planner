@@ -22,13 +22,6 @@ body{
     border: none;    
 }
 
-/* .header-container i:hover{
-    color: #333;
-    box-shadow:  4px 4px 2px #fff56a;
-    background-color: #f3b461 ;
-    border: none;
-} */
-
 header,form{
     min-height: 20vh;
     align-items: center;
@@ -93,20 +86,11 @@ form button:active{
     transition: all 0.5s ease;
 }
 
-.todo-main{
-    display: initial;
-}
-
-/* .todo-input{
-    transition: all 0.8s ease;
-} */
 
 .todo-button{
     margin: 0px 0px 0px 1rem;
 }
-/* .todo:hover{
-    background: #555;
-} */
+
 
 .todo-input-empty{
     box-shadow: 0 0 5px 1px #ff0000 !important;
@@ -116,9 +100,6 @@ form button:active{
     flex: 1;
 }
 
-/* .todo li:hover{
-    color: #eee;
-} */
 
 .todo-item{
     padding: 0rem 0.5rem;
@@ -239,13 +220,6 @@ form button:active{
     transition: all 0.3s ease;
 }
 
-/* .todo-sub-item:hover{
-    background:linear-gradient(90deg,#aaa,#424141);
-    color: rgb(255, 255, 255);
-    color: #fff ;
-    background: #555;
-    box-shadow: 0px 2px 3px 2px #fff;
-} */
 
 .todo-sub li{
     line-height: 1rem;
@@ -262,10 +236,6 @@ form button:active{
     color: #eee;
 }
 
-/* 
-.todo-sub img:hover{
-    background-color: rgb(218, 115, 115);
-} */
 
 .sub-checked-button,.sub-trash-button{
     background: #ff6f47;
@@ -395,7 +365,3 @@ select{
 .select-button-down{
     transform: rotate(0deg);
 }
-
-/* *{
-    color : ;
-} */

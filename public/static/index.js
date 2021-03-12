@@ -23,8 +23,9 @@ const subtodocancelbtn = document.querySelector('.bl-footer>button:last-child');
 //Event listeners
 submitbutton.addEventListener('click',addToList);
 ulelement.addEventListener('click',doRequired);
-document.addEventListener("DOMContentLoaded", getTodosFromSessionStorage());
-/* selectFeild.addEventListener('change',applyFilter); */
+document.addEventListener("DOMContentLoaded", getTodosFromLocalStorage());
+
+//listen for select value change
 $(selectFeild).change(applyFilter);
 
 //initializing the datepicker
@@ -41,26 +42,23 @@ $(todoinput).blur(removeBoxShadow);
 $(calendar).focus(addBoxShadow);
 $(calendar).blur(removeBoxShadow);
 
-
+//add shadow to input feild on focus
 $(subtodoinput).focus(function(){
     $(this).removeClass('bl-empty');
 });
 
+//remove shadow from input feild on blur
 $(subtodoinput).blur(function(){
     $(this).removeClass('bl-empty');
 });
 
+//add shadow to select feild on focus
 $(selectFeild).click(function() {
     
-    /* console.log(selectFeild); */
-
     $(this).toggleClass('select-filter-shadow');
 });
 
-/* $(selectFeild).focus(function(){
-    selectFeild.classList.add('select-filter-shadow')
-});
-*/
+//remove shadow from select feild on blur
 $(selectFeild).blur(function(){
     selectFeild.classList.remove('select-filter-shadow')
 }); 
@@ -71,19 +69,12 @@ $(subtodocancelbtn).click(function(){
     $(subtodoinput).removeClass('bl-empty');
     $(subtodoinput).val('');  
     
-    //subtodookbtn.removeEventListener('click',fucker);
-    //$(subtodookbtn).off('click');
-
-
     //work around to remove the event listener
     //else it will keep adding to the already registered eventListener
     var clone = $(subtodookbtn).clone();
-
     $(subtodookbtn).replaceWith(clone);
 
-    //$(subtodocancelbtn).before(clone);
 });
-
 
 //adding box shadow
 function addBoxShadow(event) {
@@ -97,8 +88,6 @@ function addBoxShadow(event) {
 
 //removing box shadow
 function removeBoxShadow(event) {
-
-    /* $(event.target).removeClass('todo-input-empty'); */
 
     $(event.target).css({
         'box-shadow':'none'
@@ -119,14 +108,13 @@ $('html').click(function(event){
 //Apply the select filter
 function applyFilter(){
     var selectValue = event.target.value;
-    /* console.log(selectValue); */
-    /* console.log($(ulelement).children());  */
 
+    //get all the todo-main divs
     var childTodos = ulelement.childNodes;
-    /* console.log(childTodos); */
 
+    //iterate through each of them to select the appropriate todo
     childTodos.forEach( (c)=>{
-            /*console.log(c/* .childNodes[0] );*/
+           
             var child = c.childNodes[0];
             
             switch(selectValue){
@@ -156,15 +144,12 @@ function applyFilter(){
 
 //show the div received
 function showTodo(todo){
-    /* console.log('Show ->');
-    console.log(todo); */
     $(todo).show();
 }
 
 //hide the div received
 function hideTodo(todo){
-    /* console.log('hide ->');
-    console.log(todo); */
+
     $(todo).hide();
 }
 
@@ -190,7 +175,7 @@ function addToList(event){
         //fading the new todo main div into view
         $(todomaindiv).fadeIn(400);
 
-        addMainTodoToSessionStorage();
+        addMainTodoToLocalStorage();
 
         //reseting the value of input and calendar
         //only if both have value
@@ -199,10 +184,12 @@ function addToList(event){
     }
     else{
         
+        //adding red box shadow incase of empty input
         if(!todoinput.value){
             $(todoinput).addClass('todo-input-empty');
         }
 
+        //adding red box shadow incase of empty input
         if(!calendar.value){
             $(calendar).addClass('todo-input-empty');
         }
@@ -215,39 +202,34 @@ function addToList(event){
 function doRequired(event){
     //event.preventDefault();
 
-    /* console.log(event.target.classList[0]); */
-
+    //targertitem is the button on which user clicks
     var targetitem = event.target;
 
-    /* console.log('received V');
-    console.log(targetitem); */
-
+    //if the trash button of todo-class div is clicked
     if(targetitem.classList[0] === 'trash-button'){
         const ancestor = targetitem.parentElement.parentElement;
 
-        //delete from the session storage; targetitem is the button; its parent is the 'todo' div
-        deleteMainTodoFromSessionStorage(targetitem.parentElement.innerText);
+        //delete from the local storage; targetitem is the button; its parent is the 'todo' div
+        deleteMainTodoFromLocalStorage(targetitem.parentElement.innerText);
 
+        //delete the main todo
         deleteMainTodo(ancestor);
     }
 
+    //if the add button of todo-class div is clicked
     else if(targetitem.classList[0] === 'add-button'){
 
         subtodookbtn = document.querySelector('.bl-footer>button:first-child');
 
+        //used prompt initially for taking input
         //var subtask = window.prompt("Add new sub-todo?");
 
-        //making the subtodo input taking div appear
+        //making the subtodo input taking div appear/disappear
         $(subtododiv).toggleClass('bl-hidden');
         
+        //setting the focus to input of prompt initially
         $(subtodoinput).focus();
 
-        //$(subtodoinput).focus();
-
-        /* const willAddTo = event.target;
-        console.log(event.target); */
-
-        /* var subtask = $(subtodoinput).val(); */
         //OK button
         subtodookbtn.addEventListener( 'click', function fucker(event){
             event.preventDefault();
@@ -258,16 +240,12 @@ function doRequired(event){
                 
                 //make the input taking div disappear
                 $(subtododiv).toggleClass('bl-hidden');
-
-                /* console.log(subtask); */
                 
                 const parent = targetitem.parentElement;
-
-                /* console.log('willAddTo');
-                console.log(willAddTo); */
-        
+                  
                 const ancestor =  parent.parentElement;
-        
+                
+                //get the sub todo to be added from the function
                 var tododiv = getSubTodoDiv(subtask);
                 
                 ancestor.appendChild(tododiv);
@@ -277,12 +255,14 @@ function doRequired(event){
                 subtodoinput.value = '';
 
                 let dropDownIconState = checkStateOfDropDownIcon(ancestor.childNodes[0]);
-                /* console.log(dropDownIconState); */
-
+                
+                //if the sub-todo class divs are slide up, then 
+                //slide the newly addes sub-todo after 1 sec
                 if(dropDownIconState === 'up') {
                     $(tododiv).delay(1000).slideUp(500);
                 }
 
+                //remove the event listener that is registered to the ok
                 subtodookbtn.removeEventListener('click',fucker);
             }
             
@@ -295,41 +275,35 @@ function doRequired(event){
 
     } 
 
+    //if user clicks on the sub-trash button of the sub-todo div
     else if(targetitem.classList[0] === 'sub-trash-button'){
-       // console.log(targetitem.parentElement);
-        //targetitem.parentElement.remove();
-
+       
         let __mainToDoDiv__ = targetitem.parentElement.parentElement.childNodes[0];
 
         //delete the sub-todo from session storage
-        deleteSubTodoFromSessionStorage(targetitem.parentElement.innerText,__mainToDoDiv__.innerText);
+        deleteSubTodoFromLocalStorage(targetitem.parentElement.innerText,__mainToDoDiv__.innerText);
 
+        //fade and remove the sub-todo
         deleteSubTodo(targetitem.parentElement);
 
-       /*  let todoMainDiv = targetitem.parentElement.parentElement;
-        let isTrue =  checkAllSubTodoDone(todoMainDiv);
-        if(isTrue){
-            console.log('YeS!');
-        }else{
-            console.log('Get outta here!!');
-        } */
     } 
 
     else if(targetitem.classList[0] === 'checked-button' ){
         const subtodo = targetitem.parentElement;
         subtodo.classList.toggle ('completed');
 
-        /* console.log(subtodo); */        
+               
 
         if(subtodo.classList[1] === 'completed'){
             markAllSubToDoCompleted(subtodo.parentElement);
             const maintodo = subtodo.parentElement.childNodes[0];
             const buttons = maintodo.getElementsByTagName('button');
-            //console.log(buttons);
+            
+            //disable the add button if the todo is marked completed
             makeButtonDisabled(buttons);
 
             //set checked status as true in session storage
-            setCheckStatusInSessionStorage(subtodo,'true');
+            setCheckStatusInLocalStorage(subtodo,'true');
         }
         else  {  
             markUncompleted(subtodo.parentElement);
@@ -339,7 +313,7 @@ function doRequired(event){
             makeButtonEnabled(buttons);
 
             //set checked status as true in session storage
-            setCheckStatusInSessionStorage(subtodo,'false');
+            setCheckStatusInLocalStorage(subtodo,'false');
         }
     }
 
@@ -358,14 +332,14 @@ function doRequired(event){
             maintodo.childNodes[0].classList.add('completed');
             makeButtonDisabled(maintodo.getElementsByTagName('button'));
 
-            setCheckStatusInSessionStorage( _todoMainDiv_, 'true' );
+            setCheckStatusInLocalStorage( _todoMainDiv_, 'true' );
 
         }else {
             const maintodo = subtodo.parentElement;
             maintodo.childNodes[0].classList.remove('completed');
             makeButtonEnabled(maintodo.getElementsByTagName('button'));
 
-            setCheckStatusInSessionStorage( _todoMainDiv_, 'false' );
+            setCheckStatusInLocalStorage( _todoMainDiv_, 'false' );
 
         }
     }
@@ -390,17 +364,16 @@ function doRequired(event){
 
 }
 
-//delete todo from session storage
-function deleteSubTodoFromSessionStorage(__subTodoText__,__mainTodoText__) {
+//delete todo from Local storage
+function deleteSubTodoFromLocalStorage(__subTodoText__,__mainTodoText__) {
     
 
     __subTodoText__ = __subTodoText__.split('\n')[1];
-   /*  console.log(__subTodoText__+' '+__mainTodoText__); */
-
+   
     let __todo__ = __mainTodoText__.split(":")[0].trim();
     let __deudate__ = __mainTodoText__.split(":")[1].trim();
 
-    let __TodosArr__ = checkSessionStorage();
+    let __TodosArr__ = checkLocalStorage();
 
     let found = false;
 
@@ -438,18 +411,17 @@ function deleteSubTodoFromSessionStorage(__subTodoText__,__mainTodoText__) {
         }
     }
 
-    setSessionStorage(__TodosArr__); 
+    setLocalStorage(__TodosArr__); 
 }
 
-
-//delete todo from session storage
-function deleteMainTodoFromSessionStorage(__todoText__) {
+//delete todo from Local storage
+function deleteMainTodoFromLocalStorage(__todoText__) {
     console.log(__todoText__);
 
     let __todo__ = __todoText__.split(":")[0].trim();
     let __deudate__ = __todoText__.split(":")[1].trim();
 
-    let __TodosArr__ = checkSessionStorage();
+    let __TodosArr__ = checkLocalStorage();
 
     for(let i=0;i<__TodosArr__.length;i++){
         // get the index which matches the todo
@@ -458,15 +430,14 @@ function deleteMainTodoFromSessionStorage(__todoText__) {
             __TodosArr__.splice(i,1);
         }
     }
-    setSessionStorage(__TodosArr__);
+    setLocalStorage(__TodosArr__);
 }
 
 //check if the drop down icon state is up or down
 function checkStateOfDropDownIcon(__todoDIV__) {
-    /* console.log(__todoDIV__) */;
-
+    
     let __dropDownBTN__ = $(__todoDIV__).children('.dropdown-button')[0];
-    /* console.log(__dropDownBTN_); */
+    
     let __childIcon__   = __dropDownBTN__.childNodes[0];
 
     if(__childIcon__.classList[2] === 'dropdown-button-rotate-down'){
@@ -479,59 +450,51 @@ function checkStateOfDropDownIcon(__todoDIV__) {
  
 }
 
-//set the main todo checked status in session storage
-function setCheckStatusInSessionStorage(todoToBeMarked, status) {
-    let __todos__ = checkSessionStorage();
+//set the main todo checked status in Local storage
+function setCheckStatusInLocalStorage(todoToBeMarked, status) {
+    let __todos__ = checkLocalStorage();
 
     let todoText = todoToBeMarked.innerText.split(":")[0].trim(); 
     let todoDueDate = todoToBeMarked.innerText.split(":")[1].trim(); 
 
     for(let i=0;i<__todos__.length;i++){
-        //console.log(arr[i].todo);
     
         if((__todos__[i].todo === todoText) && (__todos__[i].dueDate === todoDueDate)){
            
-           /* console.log(__todos__[i]); */
-
            __todos__[i].checked = status;
             break;
         }
     }
 
-    /* sessionStorage.setItem( 'allTodo', JSON.stringify(__todos__) ); */
-    setSessionStorage(__todos__);
+    setLocalStorage(__todos__);
 }
 
-//set the sub todo checked status in the session storage
+//set the sub todo checked status in the Local storage
 function setSubTodoStatus(sub,main,status){
-    let __todos__ = checkSessionStorage();
+    let __todos__ = checkLocalStorage();
 
     let _sub_ = sub.split('\n');
 
-    /* console.log(_sub_); */
+    //getting the sub-todo text irrespective of how many line breaks present
     for(const s of _sub_) {
         if(s){
-           /*  console.log(s); */
            sub = s.trim();
         }
     }
 
-    /* console.log(sub); */
-    console.log(sub+" "+main+" "+status);
-
     let __todo__    = main.split(':')[0].trim();
     let __deudate__ = main.split(':')[1].trim();
 
-    for(let i=0;i<__todos__.length;i++){
-        //console.log(arr[i].todo);
+
+    for(let i=0;i<__todos__.length;i++){    
         
-        //get the matching todo 
+        //get the matching main-todo  
         if((__todos__[i].todo === __todo__) && (__todos__[i].dueDate === __deudate__)){
            
-           /* console.log(__todos__[i].todo); */
-
+            //store the sub todos
             let __subTodo__ = __todos__[i].subTodos;
 
+            //iterate through the "subTodos" array
             for(let j=0;j<__subTodo__.length;j++){
 
                 //get the sub todo whose status to be updated
@@ -544,61 +507,53 @@ function setSubTodoStatus(sub,main,status){
         }
     }
 
-    setSessionStorage(__todos__);
+    //set the changes back to local storage
+    setLocalStorage(__todos__);
 }
  
-//set todos back to session storage
-function setSessionStorage(__ToDos__) {
-    sessionStorage.setItem( 'allTodo', JSON.stringify(__ToDos__) );
+//set todos back to local storage
+function setLocalStorage(__ToDos__) {
+    localStorage.setItem( 'allTodo', JSON.stringify(__ToDos__) );
 }
 
-//check if todo already there in session storage
-function checkSessionStorage() {
+//check if todo already there in local storage
+function checkLocalStorage() {
     let _todos_ ;
-    if( sessionStorage.getItem('allTodo') === null ){
+    if( localStorage.getItem('allTodo') === null ){
         _todos_ = [];
     }
     else {
-        _todos_ = JSON.parse( sessionStorage.getItem('allTodo') );
+        _todos_ = JSON.parse( localStorage.getItem('allTodo') );
     }
     return _todos_;
 }
 
-//adding todos to session storage 
-function addMainTodoToSessionStorage() {
-    let _TODO_ = checkSessionStorage() ;
+//adding todos to local storage 
+function addMainTodoToLocalStorage() {
+    let _TODO_ = checkLocalStorage() ;
 
+    //creating a main_todo object and storing it to local storage
     let _mainTodo = {
         'todo'    : todoinput.value.trim(),
         'dueDate' : calendar.value.trim(),
         'checked' : 'false',
         'subTodos': [] 
     }; 
-    
-    /* if( sessionStorage.getItem('allTodo') === null ){
-        _TODO_ = [];
-    }
-    else {
-        _TODO_ = JSON.parse( sessionStorage.getItem('allTodo') );
-    } */
-
 
     _TODO_.push(_mainTodo);
 
-    /* sessionStorage.setItem('allTodo',JSON.stringify(_TODO_)); */
-    setSessionStorage(_TODO_);
+    setLocalStorage(_TODO_);
 
 }
 
-//getting todos from session storage
+//getting todos from local storage
 //also appending to the ul element
-function getTodosFromSessionStorage() {
-    let _TODO_ = checkSessionStorage();
-
-    //console.log(_TODO_);
+function getTodosFromLocalStorage() {
+    let _TODO_ = checkLocalStorage();
 
     _TODO_.forEach( (t) =>{ 
 
+        //had to create another function as javascript does not support function over-loading
         let _mainTodoDiv = getMainTodoDivFromSessionStorage(t.todo,t.dueDate);
 
         //marking the todo as checked; if checked is set true
@@ -643,39 +598,33 @@ function getTodosFromSessionStorage() {
     } );
 }
 
-//adding the sub todo of a main todo to session storage
+//adding the sub todo of a main todo to local storage
 function addSubTodoToSessionStorage(_ancestor_, _subTask_) {
     let __todoText__ = _ancestor_.childNodes[0].innerText.trim();
-    //console.log(__todoText__);  
-
+     
     let __todo__ = __todoText__.split(":")[0].trim();
     let __deudate__ = __todoText__.split(":")[1].trim();
 
-    /* console.log(__todo__+" "+__deudate__);   */
-
     //saving the status of the sub todo
     let subTodoObj =  { '_subTodo': _subTask_.trim(), '_checked':'false' };
-    let __TODOS__ = checkSessionStorage();
+    let __TODOS__ = checkLocalStorage();
 
     for(let i=0;i<__TODOS__.length;i++){
-        //console.log(arr[i].todo);
     
         if((__TODOS__[i].todo === __todo__) && (__TODOS__[i].dueDate === __deudate__)){
            
-           /* console.log(__TODOS__[i].todo); */
-
            __TODOS__[i].subTodos.push(subTodoObj);
             break;
         }
     }
 
     /* sessionStorage.setItem('allTodo',JSON.stringify(__TODOS__)); */
-    setSessionStorage(__TODOS__);
+    setLocalStorage(__TODOS__);
 }
 
 //rotate child icon
 function rotateChildIcon(childIcon){
-    /* console.log(childIcon); */
+    
     if(childIcon.classList[2] == 'dropdown-button-rotate-down'){
         childIcon.classList.remove('dropdown-button-rotate-down');
         childIcon.classList.add('dropdown-button-rotate-up');
@@ -687,7 +636,7 @@ function rotateChildIcon(childIcon){
 
 //toggle slide the sub todos
 function toggleShowSubTodos(ancestor,childIcon) {
-   /*  console.log(ancestor); */
+   
     var childrens = $(ancestor).children().not('.todo');
 
     if(childrens.length){
@@ -714,12 +663,12 @@ function deleteSubTodo(element) {
 
             if(isTrue){
                 /* console.log('YeS!'); */
+                //if true mark the main todo completed
                 markMainTodoCompleteIfNot(todoMainDiv);
-
+                
+                //also make the button disabled
                 makeButtonDisabled(todoMainDiv.childNodes[0].getElementsByTagName('button'));
                 
-            }else{
-                /* console.log('Get outta here!!'); */
             }
     });
 }
@@ -729,7 +678,7 @@ function markMainTodoCompleteIfNot(element) {
     let mainTodoDiv = element.childNodes[0];
     if(!(mainTodoDiv.classList[1] === 'completed')){
         mainTodoDiv.classList.add('completed');
-        setCheckStatusInSessionStorage(mainTodoDiv,'true');
+        setCheckStatusInLocalStorage(mainTodoDiv,'true');
     }
 }
 
@@ -738,11 +687,12 @@ function deleteMainTodo( ancestor){
 
     var childrens = $(ancestor).children().not('.todo');
 
-    //console.log(childrens);
+    console.log(childrens);
 
     if(childrens.length){
-        /* console.log('before slide up'); */
-        /* $(ancestor).children().not('.todo') */
+
+        //if child todos are present then slide them up
+        //then fade out the whole todo-main class div and remove
         $(childrens).slideUp(300,'linear',
                 function(){
                     $(ancestor).fadeOut(400, function(){
@@ -753,17 +703,15 @@ function deleteMainTodo( ancestor){
         
     }else{
     
-        /* console.log('before fade out'); */
         $(ancestor).fadeOut(400, function(){
 
-            /* console.log('before remove'); */
             ancestor.remove();
         }); 
         
     }
 }
 
-//get the main todo div
+//create and return the todo-main class div
 function getMainTodoDiv(){
     //todo-div
     const todomaindiv = document.createElement('div');
@@ -888,7 +836,6 @@ function makeButtonEnabled(buttons){
     for(let i=0;i<buttons.length;i++){
         if(buttons[i].classList[0] === 'add-button'){
             buttons[i].disabled = false;
-            //console.log("fuck")
         }
     }
 }
@@ -906,8 +853,9 @@ function makeButtonDisabled(buttons){
 function markUncompleted(target){
     const childtodos = target.childNodes
     for(let i=1;i<childtodos.length;i++){
-        //console.log("this->>>");
-        //console.log(childtodos[i].classList[1]);
+
+        //if the child todo has the class completed only then remove the class
+        //here completed is the second classList item that's why index used is 1
         if(childtodos[i].classList[1]){
             childtodos[i].classList.remove('completed');
             setSubTodoStatus( childtodos[i].innerText,childtodos[0].innerText,'');
@@ -920,20 +868,18 @@ function markUncompleted(target){
 function markAllSubToDoCompleted(target){
     const childtodos = target.childNodes
     for(let i=1;i<childtodos.length;i++){
-        //console.log("this->>>");
-        //console.log(childtodos[i].classList[1]);
-        //if(!childtodos[i].classList[1])
-            childtodos[i].classList.add('completed');
+        
+        childtodos[i].classList.add('completed');
 
-            console.log('marking all-'+childtodos[i].innerText+'-'+childtodos[0].innerText);
+        console.log('marking all-'+childtodos[i].innerText+'-'+childtodos[0].innerText);
 
-            setSubTodoStatus( '\n'+childtodos[i].innerText+'\n',childtodos[0].innerText,'completed');
+        setSubTodoStatus( '\n'+childtodos[i].innerText+'\n',childtodos[0].innerText,'completed');
     }
 }
 
 //delegates the call to checkCompleted
 function checkAllSubTodoDone(target){
-    //console.log(target);
+    
     //get all the children of todo-main div
     const childtodos = target.childNodes
 
@@ -951,28 +897,13 @@ function checkAllSubTodoDone(target){
 function checkCompleted(childtodos){
     let bool = false;
     for(let i=1;i<childtodos.length;i++){
-        /*if(!childtodos[i].classList[0] === 'completed'){
-            bool =  false;
-        }*/
-        //console.log("this->>>");
-        //console.log(childtodos[i].classList[1]);
+        
         if(!childtodos[i].classList[1] ){
             return false;
         }
     }
-    //if()
+    
     return true;
 }
-
-/*
-console.log(addbutton);
-
-if(addbutton){
-    addbutton.addEventListener('click',addSubList);
-
-    function addSubList(event){
-        console.log('Hey!');
-    }
-}*/
 
 })
