@@ -546,7 +546,7 @@ function setSubTodoStatus(sub,main,status){
 
     setSessionStorage(__todos__);
 }
-
+ 
 //set todos back to session storage
 function setSessionStorage(__ToDos__) {
     sessionStorage.setItem( 'allTodo', JSON.stringify(__ToDos__) );
