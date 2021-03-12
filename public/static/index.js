@@ -288,12 +288,12 @@ function doRequired(event){
 
     } 
 
+    //if user clicks on checked button of the head todo
     else if(targetitem.classList[0] === 'checked-button' ){
         const subtodo = targetitem.parentElement;
         subtodo.classList.toggle ('completed');
 
-               
-
+        //as the classList is being toggled; so check if completed or not
         if(subtodo.classList[1] === 'completed'){
             markAllSubToDoCompleted(subtodo.parentElement);
             const maintodo = subtodo.parentElement.childNodes[0];
@@ -317,6 +317,7 @@ function doRequired(event){
         }
     }
 
+    //if user clicks on checked button of child todo
     else if( targetitem.classList[0] === 'sub-checked-button' ){
         const subtodo = targetitem.parentElement;
         subtodo.classList.toggle ('completed');
@@ -344,21 +345,15 @@ function doRequired(event){
         }
     }
 
+    //if user clicks on dropdown button
     else if(targetitem.classList[0] === 'dropdown-button'){
 
         const ancestor = targetitem.parentElement.parentElement;
 
-        /* console.log(targetitem); */
-        //targetitem is the button and child is the icon
         const childIcon = $(targetitem).children();
-       /*  console.log(childIcon); */
-       
-       //rotate the icon - deprecated. Rotate only when child elements present
-      /*  $(childIcon).toggleClass('dropdown-button-rotate'); */
 
-      /* rotateChildIcon(childIcon[0]); */
-
-      toggleShowSubTodos(ancestor,childIcon);
+        //delegate the handle to another function
+        toggleShowSubTodos(ancestor,childIcon);
 
     }
 
@@ -634,11 +629,12 @@ function rotateChildIcon(childIcon){
     }
 }
 
-//toggle slide the sub todos
+//toggle slide the sub todos-if it contains child todos
 function toggleShowSubTodos(ancestor,childIcon) {
    
     var childrens = $(ancestor).children().not('.todo');
 
+    //check if Child todos are present
     if(childrens.length){
 
         rotateChildIcon(childIcon[0]);
