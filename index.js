@@ -272,6 +272,13 @@ function doRequired(event){
 
                 subtodoinput.value = '';
 
+                let dropDownIconState = checkStateOfDropDownIcon(ancestor.childNodes[0]);
+                /* console.log(dropDownIconState); */
+
+                if(dropDownIconState === 'up') {
+                    $(tododiv).delay(1000).slideUp(500);
+                }
+
                 subtodookbtn.removeEventListener('click',fucker);
             }
             
@@ -372,6 +379,24 @@ function doRequired(event){
 
     }
 
+}
+
+//check if the drop down icon state is up or down
+function checkStateOfDropDownIcon(__todoDIV__) {
+    /* console.log(__todoDIV__) */;
+
+    let __dropDownBTN__ = $(__todoDIV__).children('.dropdown-button')[0];
+    /* console.log(__dropDownBTN_); */
+    let __childIcon__   = __dropDownBTN__.childNodes[0];
+
+    if(__childIcon__.classList[2] === 'dropdown-button-rotate-down'){
+        return 'down';
+    }else if(__childIcon__.classList[2] === 'dropdown-button-rotate-up'){
+        return 'up';
+    }else{
+        console.log('fuck!! ->'+__childIcon__.classList[1]);
+    }
+ 
 }
 
 //set the main todo checked status in session storage
