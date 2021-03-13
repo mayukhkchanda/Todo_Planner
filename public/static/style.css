@@ -6,6 +6,7 @@
 
 body{
     background-image: linear-gradient(120deg, #f1c42f,#fa6e47);
+    background-repeat: no-repeat;
     color: rgb(255, 255, 255);
     font-family: 'Roboto', sans-serif;
     min-height: 100vh;
@@ -24,6 +25,7 @@ body{
 
 header,form{
     min-height: 20vh;
+    min-width: 40vw;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -31,18 +33,26 @@ header,form{
 
 form input,form button{
     outline: none !important;
-    padding: 0.5rem;
-    font-size: 2rem;
+    padding: 0.6vw;
+    font-size: 1.6vw;
     border: none;
     background:white;
+    min-width: 4vw;
+    min-height: 4vh;
 }
 
 form input[type=text]{
+    min-width: 30%;
+
     color: rgb(82, 80, 80);
     transition: all 0.5s ease;
+
 }
 
 form button{
+    min-height: 4vh;
+    min-width: 3.5vw;
+    font-size: 1.6vw;
     color: #f3b461 ;
     background: white;
     cursor: pointer;
@@ -69,16 +79,19 @@ form button:active{
 }
 
 .todo-list{
+    min-height: 40%;
     min-width: 40%;
     list-style: none;
     transition:  all 0.3s ease;
 }
 
 .todo{
-    margin: 0.5rem;
+    min-width: 2vw;
+    margin: 2vh 3vw;
     background:white;
     color: black;
-    font-size: 1.5rem;
+    font-size: 2vh;
+    font-weight: 800;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -88,7 +101,7 @@ form button:active{
 
 
 .todo-button{
-    margin: 0px 0px 0px 1rem;
+    margin: 0px 0px 0px 1vw;
 }
 
 
@@ -110,9 +123,9 @@ form button:active{
     background: #ff6f47;
     color: #fff;
     border: none;
-    padding: 1rem;
+    padding: 1.5vh 0.8vw;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.6vw;
     outline: none !important;
     transition: all 0.3s ease;
 }
@@ -162,8 +175,9 @@ form button:active{
 .dropdown-button{
     outline: none;
     border: none;
-    padding: 0.16rem 0.65rem;
-    font-size: 3rem;
+    padding: 0.9vh 0.7vw;
+    cursor: pointer;
+    font-size: 2.1em;
     color: #fff;
     background: #09edf5ce;
     transition: all 0.3s ease;
@@ -200,17 +214,18 @@ form button:active{
 
 .todo-sub{
     display: flex;
-    margin-left: 2rem;
+    margin-left: 4.5vw;
     transition: all 0.5s ease;
 }
 
 .todo-sub-item{
-    margin: 0.5rem 0px 0.5rem 0.3rem;
-    padding-left: 1rem;
-    padding-bottom: 0.9rem;
+    margin: 0.5vh 0px 0.5vh 0.3vw;
+    padding-top: 0vh;
+    padding-left: 1vw;
+    padding-bottom: 2vh;
     background: #fff ;/* linear-gradient(90deg,rgb(66, 65, 65),#aaa); */
     color: #555;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-family: 'Roboto', sans-serif;
     display: flex;
     justify-content: space-between;
@@ -222,17 +237,17 @@ form button:active{
 
 
 .todo-sub li{
-    line-height: 1rem;
+    line-height: 2vh;
 }
 
 .todo-sub img{
     border: none;
     justify-content: center;
     align-items: center;
-    margin-top: 1.2rem;
+    margin-top: 0.9rem;
     padding-left: 5px;
-    height: 1.5rem;
-    width: 1.6rem;
+    height: 1.4rem;
+    width: 1.5rem;
     color: #eee;
 }
 
@@ -241,10 +256,10 @@ form button:active{
     background: #ff6f47;
     color: #fff;
     border: none;
-    height: 2.9rem;
-    width: 0.7vw;
-    margin: 0.45rem 0.2px 0px 0.2px ;
-    padding: 1rem 1.8rem 1rem 1rem;
+    height: 5.9vh;
+    width: 1vw;
+    margin: 0.5vh 0.2px 0px 0.2px ;
+    padding: 2vh 1.8rem 2vh 1rem;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -322,14 +337,19 @@ select{
 
 .select{
     position: relative;
+    box-sizing: border-box;
 }
 
 .select-filter{
-    margin: 0rem 1rem 0rem 1rem;
-    padding: 1rem 2rem 1rem 0.5rem;
+    
+    min-height: 4vh;
+    min-width: 4vw;
+    margin: 0rem 0vw 0rem 1vw;
+    padding: 1vh 2vw 1vh 1vw;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.5vw;
     color: #f1c42fdc;
+    box-sizing: border-box;
     transition: all 0.3s ease;
 }
 .select-filter-shadow{
@@ -338,12 +358,13 @@ select{
 
 .select::after{
     content: "\25BC";
+    min-height: 0vh;
+    min-width: 0vw;
+    margin: 0vw 0vw;
+    padding: 0.9vh 0.2vw ;
     position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0rem 0.5rem;
-    padding: 0.75rem 0.5rem 0.75rem 0.5rem; 
-    font-size: 1.5rem;
+    
+    font-size: 1.5vw;
     color: #f1c42f;
     background: #fff;
     pointer-events: none;
@@ -365,3 +386,9 @@ select{
 .select-button-down{
     transform: rotate(0deg);
 }
+
+/* footer{
+    background-color: #333 !important;
+    color: #fff;
+} */
+
