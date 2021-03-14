@@ -387,8 +387,30 @@ select{
     transform: rotate(0deg);
 }
 
+.logo-container{
+    background-image: linear-gradient(-135deg,#000 50%,#F78341 50%);
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    padding: 3rem;
+    box-sizing: border-box;
+    display: flex;
+    transition: all 0.3s ease;
+}
+.git-logo{
+    margin: 0;
+    padding: 0;
+    transform: rotate(49deg);
+    position: absolute;
+    top: 15px;
+}
 
-  /* -------                   -------*/
+.fa-github{
+    font-size: 2rem;
+    color: #fff;
+}
+
+  /* -------                    ------*/
  /* -------      Media Query   ------*/
 /* -------   for tabs/ipads   ------*/
 
@@ -397,6 +419,15 @@ select{
     .dropdown-button{
        padding: 0.4vh 0.2vw ;
        font-size: 4vw;
+    }
+
+    .logo-container{
+        background-image: linear-gradient(-135deg,#000 50%,#F6943F 50%);
+    }
+
+    .fa-github{
+        font-size: 2rem;
+        color: #fff;
     }
 }
 
@@ -565,6 +596,22 @@ select{
         font-size: 15px;
         margin: 10px 0px;
         padding: 0px 5px;
+    }
+
+    .logo-container{
+       padding: 1.5rem;
+        background-image: linear-gradient(-135deg,#000 50%,#F59A3E 50%);
+    }
+
+    .git-logo{
+        transform: rotate(51deg);
+        position: absolute;
+        top: 8px;
+    } 
+
+    .fa-github{
+        font-size: 1rem;
+        color: #fff;
     }
 
 }
