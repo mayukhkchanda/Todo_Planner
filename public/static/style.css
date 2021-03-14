@@ -336,6 +336,7 @@ select{
 }
 
 .select{
+    display: flex;
     position: relative;
     box-sizing: border-box;
 }
@@ -361,9 +362,8 @@ select{
     min-height: 0vh;
     min-width: 0vw;
     margin: 0vw 0vw;
-    padding: 0.9vh 0.2vw ;
-    position: absolute;
-    
+    padding: 0.9vh 0.2vw 0.9vh 0.2vw ;
+
     font-size: 1.5vw;
     color: #f1c42f;
     background: #fff;
@@ -386,6 +386,24 @@ select{
 .select-button-down{
     transform: rotate(0deg);
 }
+
+
+  /* -------                   -------*/
+ /* -------      Media Query   ------*/
+/* -------   for tabs/ipads   ------*/
+
+
+@media all and (max-width:1024px){
+    .dropdown-button{
+       padding: 0.4vh 0.2vw ;
+       font-size: 4vw;
+    }
+}
+
+
+  /* -------               -------*/
+ /* -------  Media Query  -------*/
+/* -------   for Phones -------*/
 
 @media all and (max-width:600px){
 
@@ -437,7 +455,7 @@ select{
     }
 
     .todo-button i{
-        font-size: 1.6rem;
+        font-size: 4vh;
     }
 
     .todo-calendar{
@@ -454,15 +472,17 @@ select{
     }
 
     .todo-calendar i{
-        font-size: 1rem;
+        font-size: 2vh;
         padding: 0px 50px 0px 0px;
     }
 
     .select{
+        display: flex;
         margin: 0vw 0vw 0vw 4vw;
     }
     
     .select-filter{
+        background: #fff;
         width: 25vw;
         font-size: 0.75rem;
     }
