@@ -249,6 +249,10 @@ function doRequired(event){
                 var tododiv = getSubTodoDiv(subtask);
                 
                 ancestor.appendChild(tododiv);
+
+                const sub_ul = $(ancestor).children('.sub-todo-list');
+
+                console.log(sub_ul);
                 
                 addSubTodoToSessionStorage(ancestor,subtask);
 
@@ -560,6 +564,9 @@ function getTodosFromLocalStorage() {
             makeButtonDisabled(buttons);
         }
 
+        let __subList__ = $(_mainTodoDiv).children('.sub-todo-list')[0];
+        console.log(__subList__);
+
         //add subtodos to the main div; *if any*
         if(t.subTodos.length > 0){
             let _subTodos_ = t.subTodos;
@@ -577,7 +584,11 @@ function getTodosFromLocalStorage() {
                     }
 
                     //append child
-                    _mainTodoDiv.appendChild(_subTodoDiv_);
+                    /* _mainTodoDiv.appendChild(_subTodoDiv_); */
+
+                    __subList__.appendChild(_subTodoDiv_);
+
+
              } );
 
         }
@@ -830,6 +841,10 @@ function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
 //create a subtodo div
 function getSubTodoDiv( subtask){
     
+    //ADD -> li
+    const subli = document.createElement('li');
+    subli.classList.add('sublist-item');
+
     const tododiv = document.createElement('div');
     tododiv.classList.add('todo-sub');
 
@@ -856,7 +871,10 @@ function getSubTodoDiv( subtask){
     trash.innerHTML = '<i class="fas fa-trash"></i>';
     tododiv.appendChild(trash);
 
-    return tododiv;
+    //adding the whole div to the li item
+    subli.appendChild(tododiv);    
+
+    return subli;
 }
 
 //make add button enabled

@@ -605,6 +605,26 @@ select{
         font-size: 12px;
     }
 
+    .sub-todo-list{
+        display: flex;
+        flex-direction: column;
+        box-sizing: initial;
+        justify-content: center;
+    }
+
+    .sublist-item{
+        list-style: none;
+        width: 70%;
+        border-radius: 5px;
+        background: red;
+        box-sizing: initial;
+        justify-content: space-between;
+        padding: 5px;
+        margin: 1vh 2.5rem;
+    }
+
+    
+
     .todo-item{
         font-size: 2vw;
     }
@@ -626,8 +646,7 @@ select{
 
     .todo-sub{
         width: fit-content;
-        margin-top: 0;
-        padding: 0;
+        margin: 0;
         width: 100%;
         box-sizing:initial;
     }
@@ -640,21 +659,25 @@ select{
         width: 20px;
     }
 
-    .todo-sub li{
+    /* .todo-sub li{
         margin: 10px 0px;
         padding: 5px;
         height: 25px;
         width: 10px;
         position: relative;
-    }
+    } */
 
-    .todo-sub li>br{
+    .todo-sub p>br{
         display: none;
     }
 
     .todo-sub-item{
+        background: none;
+    }
+
+    .todo-sub-item{
         font-size: 4vw;
-        padding-bottom: 5px;
+        padding: 1vh 2vw;
     }
 
     .sub-checked-button,.sub-trash-button{
