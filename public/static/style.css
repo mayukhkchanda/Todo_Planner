@@ -72,17 +72,38 @@ form button:active{
     transform: scale(0.75);
 }
 
-.todo-container{
+/* .todo-container{
     display: flex;
     justify-content: center;
     align-items: center;
+} */
+
+/* .todo-container{
+} */
+
+.list-item{
+    box-sizing: initial;
+    margin: 1rem 0rem;
 }
 
 .todo-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
     min-height: 40%;
     min-width: 40%;
     list-style: none;
     transition:  all 0.3s ease;
+}
+
+
+
+.todo-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
 }
 
 .todo{
@@ -213,8 +234,12 @@ form button:active{
 }
 
 .todo-sub{
+    position: relative;
     display: flex;
-    margin-left: 4.5vw;
+    word-wrap: break-word;
+    box-sizing: initial;
+    width: 100%;
+    margin: 0vw 3vw;
     transition: all 0.5s ease;
 }
 
@@ -231,7 +256,7 @@ form button:active{
     justify-content: space-between;
     align-items: center;
     border:none;
-    min-width: 80%;
+    min-width: 60%;
     transition: all 0.3s ease;
 }
 
@@ -420,6 +445,10 @@ select{
        padding: 0.4vh 0.2vw ;
        font-size: 4vw;
     }
+    
+    .bl-dialog{
+        transform: scale(0.78);
+    }
 
     .logo-container{
         background-image: linear-gradient(-135deg,#000 50%,#F6943F 50%);
@@ -467,6 +496,13 @@ select{
         font-size: 0.7rem;
         font-weight: 500;        
         color: #333;
+    }
+
+    .todo-container{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .todo-input{
@@ -525,17 +561,48 @@ select{
         padding: 6px 5px ;
         font-size: 15px;
     }
+/* 
+    .todo-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    } */
+    
+    .todo-list{
+        display: flex;
+        justify-content: center;
+    }
 
-    .todo-main .todo{
-        position: relative;
-        right: 10%;
+    .list-item{
+        display: flex;
+        box-sizing: initial;
+        flex-direction: column;
+        justify-content: center;
+        background: #fadada;
+        border-radius: 5px;
+        width: 95%;
+    }
+
+    .todo-main{
+        margin: 1rem;
     }
 
     .todo{
-        box-sizing: border-box;
-        /* padding: 5px; */
+        word-wrap: break-word;
+        width: fit-content;
+        box-sizing: initial;
+        margin: 0;
+        padding: 0;
+        border-radius: 5px;
         width: 100%;
         height: 35px;
+        background: #73fcec ;
+    }
+
+
+    .todo li{
+        color: #555;
+        font-size: 12px;
     }
 
     .todo-item{
@@ -558,10 +625,11 @@ select{
     }
 
     .todo-sub{
-        position: relative;
-        right: 7%;
-        margin-left: 0px;
-        box-sizing: border-box;
+        width: fit-content;
+        margin-top: 0;
+        padding: 0;
+        width: 100%;
+        box-sizing:initial;
     }
 
     .todo-sub img{
@@ -578,7 +646,6 @@ select{
         height: 25px;
         width: 10px;
         position: relative;
-        box-sizing: border-box;
     }
 
     .todo-sub li>br{

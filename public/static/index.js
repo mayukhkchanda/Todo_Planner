@@ -709,15 +709,25 @@ function deleteMainTodo( ancestor){
 
 //create and return the todo-main class div
 function getMainTodoDiv(){
+
+    //creating an li item
+    const li = document.createElement('li');
+    li.classList.add('list-item');
+
     //todo-div
     const todomaindiv = document.createElement('div');
     todomaindiv.classList.add('todo-main');
 
+    //ul item to contain sub list
+    const ulitem = document.createElement('ul');
+    ulitem.classList.add('sub-todo-list'); 
+
+    //todo-class div
     const  tododiv = document.createElement('div');
     tododiv.classList.add('todo');
 
-    //li-item
-    const todoli = document.createElement('li');
+    //p-item  /***MOD:li->p*/
+    const todoli = document.createElement('p');
     todoli.classList.add('todo-item');
     todoli.innerText = todoinput.value.trim()+': '+calendar.value;
     tododiv.appendChild(todoli);
@@ -746,17 +756,35 @@ function getMainTodoDiv(){
     trash.innerHTML = '<i class="fas fa-trash"></i>';
     tododiv.appendChild(trash);
 
+
     todomaindiv.appendChild(tododiv);
-    
-    return todomaindiv;
+
+    //MOD: adding a sub-ul list
+    todomaindiv.appendChild(ulitem);
+
+    li.appendChild(todomaindiv);
+    li.appendChild(ulitem);
+
+    return li;
 }
 
 //create and return the main todo div; JS does not support function overloading
 function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
+
+
+    //creating an li item
+    const li = document.createElement('li');
+    li.classList.add('list-item');
+
     //todo-div
     const todomaindiv = document.createElement('div');
     todomaindiv.classList.add('todo-main');
 
+    //creating a sub li-item
+    const ulitem = document.createElement('ul');
+    ulitem.classList.add('sub-todo-list'); 
+
+    //todo main
     const  tododiv = document.createElement('div');
     tododiv.classList.add('todo');
 
@@ -792,7 +820,11 @@ function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
 
     todomaindiv.appendChild(tododiv);
     
-    return todomaindiv;
+    li.appendChild(todomaindiv);
+
+    li.appendChild(ulitem);
+    
+    return li;
 }
 
 //create a subtodo div
@@ -802,12 +834,12 @@ function getSubTodoDiv( subtask){
     tododiv.classList.add('todo-sub');
 
     //image item
-    const img = document.createElement('img');
+    /* const img = document.createElement('img');
     img.src = 'images/arrowholo.svg';
-    tododiv.appendChild(img);
+    tododiv.appendChild(img); */
 
-    //li-item
-    const todoli = document.createElement('li');
+    //p-item /*** change : li -> p */
+    const todoli = document.createElement('p');
     todoli.classList.add('todo-sub-item');
     todoli.innerHTML = `<br>${subtask.trim()}<br>`;
     tododiv.appendChild(todoli);
