@@ -105,7 +105,7 @@ $('html').click(function(event){
 
 //functions
 
-//Apply the select filter
+//Apply the select filter //--- Need To FIX(NTF)
 function applyFilter(){
     var selectValue = event.target.value;
 
@@ -243,16 +243,18 @@ function doRequired(event){
                 
                 const parent = targetitem.parentElement;
                   
-                const ancestor =  parent.parentElement;
+                const ancestor =  $(parent).parents('.list-item'); //parent.parentElement.parentElement.parentElement;
                 
                 //get the sub todo to be added from the function
                 var tododiv = getSubTodoDiv(subtask);
                 
-                ancestor.appendChild(tododiv);
+                /* ancestor.appendChild(tododiv); */
 
-                const sub_ul = $(ancestor).children('.sub-todo-list');
+                const sub_ul = $(ancestor).children('.sub-todo-list')[0];
 
-                console.log(sub_ul);
+                console.log(ancestor);
+
+                sub_ul.appendChild(tododiv);
                 
                 addSubTodoToSessionStorage(ancestor,subtask);
 
@@ -800,34 +802,44 @@ function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
     tododiv.classList.add('todo');
 
     //li-item
-    const todoli = document.createElement('li');
+    const todoli = document.createElement('p');
     todoli.classList.add('todo-item');
     todoli.innerText = todoValue.trim()+': '+calendarValue;
     tododiv.appendChild(todoli);
+
+    //creating a container for buttons
+    const button_container_div = document.createElement('div');
+    button_container_div.classList.add('button-container-div-main');
 
     //add sub-task plus icon
     const add = document.createElement('button');
     add.classList.add('add-button');
     add.innerHTML= '<i class="fas fa-plus-square"></i>';
-    tododiv.appendChild(add);
+    /* tododiv.appendChild(add); */
+    button_container_div.appendChild(add);
 
     //check button
     const checked = document.createElement('button');
     checked.classList.add('checked-button');
     checked.innerHTML = '<i class="fas fa-check-square"></i>';
-    tododiv.appendChild(checked)
+    /* tododiv.appendChild(checked) */
+    button_container_div.appendChild(checked);
 
     //add dropdown button
     const dropdownBtn = document.createElement('button');
     dropdownBtn.classList.add('dropdown-button');
     dropdownBtn.innerHTML = '<i class="fas fa-caret-down dropdown-button-rotate-down"></i>';
-    tododiv.appendChild(dropdownBtn);
+    /* tododiv.appendChild(dropdownBtn); */
+    button_container_div.appendChild(dropdownBtn);
 
     //trash button
     const trash = document.createElement('button');
     trash.classList.add('trash-button');
     trash.innerHTML = '<i class="fas fa-trash"></i>';
-    tododiv.appendChild(trash);
+    /* tododiv.appendChild(trash); */
+    button_container_div.appendChild(trash);
+
+    tododiv.appendChild(button_container_div);
 
     todomaindiv.appendChild(tododiv);
     
@@ -842,10 +854,10 @@ function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
 function getSubTodoDiv( subtask){
     
     //ADD -> li
-    const subli = document.createElement('li');
-    subli.classList.add('sublist-item');
+    /* const subli = document.createElement('li');
+    subli.classList.add('sublist-item'); */
 
-    const tododiv = document.createElement('div');
+    const tododiv = document.createElement('li');
     tododiv.classList.add('todo-sub');
 
     //image item
@@ -859,22 +871,30 @@ function getSubTodoDiv( subtask){
     todoli.innerHTML = `<br>${subtask.trim()}<br>`;
     tododiv.appendChild(todoli);
 
+    //button-container-div
+    const button_container = document.createElement('div');
+    button_container.classList.add('button-container-div');
+
     //check button
     const checked = document.createElement('button');
     checked.classList.add('sub-checked-button');
     checked.innerHTML = '<i class="fas fa-check-square"></i>';
-    tododiv.appendChild(checked)
+    /* tododiv.appendChild(checked) */
+    button_container.appendChild(checked);
 
     //trash button
     const trash = document.createElement('button');
     trash.classList.add('sub-trash-button');
     trash.innerHTML = '<i class="fas fa-trash"></i>';
-    tododiv.appendChild(trash);
+    /* tododiv.appendChild(trash); */
+    button_container.appendChild(trash);
+
+    tododiv.appendChild(button_container);
 
     //adding the whole div to the li item
-    subli.appendChild(tododiv);    
+    /* subli.appendChild(tododiv);  */   
 
-    return subli;
+    return tododiv;
 }
 
 //make add button enabled
