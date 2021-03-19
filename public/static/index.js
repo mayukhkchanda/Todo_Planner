@@ -153,6 +153,7 @@ function hideTodo(todo){
     $(todo).hide();
 }
 
+//FIX -> Functionality for mobile UI
 //add new todo to the Un-ordered list element
 function addToList(event){
 
@@ -162,20 +163,37 @@ function addToList(event){
     //prevent form from submittion 
     event.preventDefault();
 
-    if(todoinput.value && calendar.value){
-        console.log(todoinput.value+' '+calendar.value);
+    if( todoinput.value.trim() && calendar.value.trim() ){
+        /* console.log(todoinput.value+' '+calendar.value); */
     
-        const todomaindiv = getMainTodoDiv();
+        const todomainli = getMainTodoDiv();
 
         //fading hiding the todo main div
-        $(todomaindiv).hide();
+        $(todomainli).hide();
 
-        ulelement.appendChild(todomaindiv);
+        //get the first Todo List Item
+        const firstTodoLi = $(ulelement).children('li')[0];
+
+        //append the new todo list item before the first item
+        //if the child exists else add it as a child element
+
+        if(firstTodoLi){
+            $(firstTodoLi).before(todomainli);
+        }else{
+            ulelement.appendChild(todomainli);
+        }
+
+        //DEPRICATED[DEP]
+        //ulelement.appendChild(todomainli);
 
         //fading the new todo main div into view
-        $(todomaindiv).fadeIn(400);
+        $(todomainli).fadeIn(500);
 
-        addMainTodoToLocalStorage();
+        const todoInputValue = todoinput.value;
+        const calendarInputValue = calendar.value;
+
+
+        addMainTodoToLocalStorage(todoInputValue,calendarInputValue);
 
         //reseting the value of input and calendar
         //only if both have value
@@ -185,12 +203,12 @@ function addToList(event){
     else{
         
         //adding red box shadow incase of empty input
-        if(!todoinput.value){
+        if(!todoinput.value.trim()){
             $(todoinput).addClass('todo-input-empty');
         }
 
         //adding red box shadow incase of empty input
-        if(!calendar.value){
+        if(!calendar.value.trim()){
             $(calendar).addClass('todo-input-empty');
         }
         
@@ -205,17 +223,23 @@ function doRequired(event){
     //targertitem is the button on which user clicks
     var targetitem = event.target;
 
+    //FIX -> Functionality for mobile UI
     //if the trash button of todo-class div is clicked
     if(targetitem.classList[0] === 'trash-button'){
-        const ancestor = targetitem.parentElement.parentElement;
+        const liAncestor = $(targetitem).parents('.list-item')[0];
+
+        console.log(liAncestor);
+
+        const paraAncestor = $(liAncestor).find('.todo-item')[0];
 
         //delete from the local storage; targetitem is the button; its parent is the 'todo' div
-        deleteMainTodoFromLocalStorage(targetitem.parentElement.innerText);
+        deleteMainTodoFromLocalStorage(paraAncestor.innerText);
 
         //delete the main todo
-        deleteMainTodo(ancestor);
+        deleteMainTodo(liAncestor);
     }
 
+    //FIX->ADD Functionality
     //if the add button of todo-class div is clicked
     else if(targetitem.classList[0] === 'add-button'){
 
@@ -236,7 +260,7 @@ function doRequired(event){
             var subtask = $(subtodoinput).val(); 
         
             //Input present in the sub-todo div's input
-            if(subtask){
+            if(subtask.trim()){
                 
                 //make the input taking div disappear
                 $(subtododiv).toggleClass('bl-hidden');
@@ -252,15 +276,22 @@ function doRequired(event){
 
                 const sub_ul = $(ancestor).children('.sub-todo-list')[0];
 
-                console.log(ancestor);
+                /* console.log($(ancestor[0]).find('.todo-item')); */
 
                 sub_ul.appendChild(tododiv);
                 
-                addSubTodoToSessionStorage(ancestor,subtask);
+                const para = $(ancestor[0]).find('.todo-item')[0];
 
+                //*Local Storage*
+                addSubTodoToSessionStorage(para,subtask);
+
+                //reseting the value
                 subtodoinput.value = '';
 
-                let dropDownIconState = checkStateOfDropDownIcon(ancestor.childNodes[0]);
+                //retriving the drop down toggle button 
+                const dropDownButton = $(ancestor[0]).find('.dropdown-button')[0]
+
+                let dropDownIconState = checkStateOfDropDownIcon(dropDownButton);
                 
                 //if the sub-todo class divs are slide up, then 
                 //slide the newly addes sub-todo after 1 sec
@@ -294,28 +325,53 @@ function doRequired(event){
 
     } 
 
+    //FIX->Functionality for mobile UI
     //if user clicks on checked button of the head todo
     else if(targetitem.classList[0] === 'checked-button' ){
-        const subtodo = targetitem.parentElement;
-        subtodo.classList.toggle ('completed');
 
+        const liAncestor = $(targetitem).parents('.list-item')[0];
+        /* console.log(liAncestor); */
+
+        //Retrive the child ul element
+        //It contains all the sub-todos
+        /* const ulChild = $(liAncestor).find('.sub-todo-list')[0];
+        console.log(ulChild);
+ */
+        const subtodo = $(liAncestor).find('.todo-main')[0];
+        subtodo.classList.toggle ('completed');
+        
+        
         //as the classList is being toggled; so check if completed or not
+        //FIX->Functionality for Mobile UI
         if(subtodo.classList[1] === 'completed'){
-            markAllSubToDoCompleted(subtodo.parentElement);
-            const maintodo = subtodo.parentElement.childNodes[0];
-            const buttons = maintodo.getElementsByTagName('button');
+            markAllSubToDoCompleted(liAncestor);
             
+            /* const maintodo = subtodo.parentElement.childNodes[0];
+            const buttons = subtodo.getElementsByTagName('button'); */
+
+            /* console.log(subtodo); */
+
+            const buttons = $(subtodo).find('button'); 
+
+           /*  console.log(buttons); */
+
             //disable the add button if the todo is marked completed
             makeButtonDisabled(buttons);
 
             //set checked status as true in session storage
             setCheckStatusInLocalStorage(subtodo,'true');
         }
+        //FIX->Functionality for Mobile UI
         else  {  
-            markUncompleted(subtodo.parentElement);
-            const maintodo = subtodo.parentElement.childNodes[0];
-            const buttons = maintodo.getElementsByTagName('button');
+
+            markUncompleted(liAncestor);
+
+            /* const maintodo = subtodo.parentElement.childNodes[0];
+            const buttons = maintodo.getElementsByTagName('button'); */
             //console.log('this',buttons);
+
+            const buttons = $(subtodo).find('button'); 
+
             makeButtonEnabled(buttons);
 
             //set checked status as true in session storage
@@ -351,6 +407,7 @@ function doRequired(event){
         }
     }
 
+    
     //if user clicks on dropdown button
     else if(targetitem.classList[0] === 'dropdown-button'){
 
@@ -415,9 +472,10 @@ function deleteSubTodoFromLocalStorage(__subTodoText__,__mainTodoText__) {
     setLocalStorage(__TodosArr__); 
 }
 
+//FIX -> DELETE MAIN TODO
 //delete todo from Local storage
 function deleteMainTodoFromLocalStorage(__todoText__) {
-    console.log(__todoText__);
+    /* console.log(__todoText__); */
 
     let __todo__ = __todoText__.split(":")[0].trim();
     let __deudate__ = __todoText__.split(":")[1].trim();
@@ -435,28 +493,30 @@ function deleteMainTodoFromLocalStorage(__todoText__) {
 }
 
 //check if the drop down icon state is up or down
-function checkStateOfDropDownIcon(__todoDIV__) {
+function checkStateOfDropDownIcon(__drpDwnbutton__) {
     
-    let __dropDownBTN__ = $(__todoDIV__).children('.dropdown-button')[0];
-    
-    let __childIcon__   = __dropDownBTN__.childNodes[0];
+    /* let __dropDownBTN__ = $(__todoDIV__).children('.dropdown-button')[0];
+    */
+    let __childIcon__   = __drpDwnbutton__.childNodes[0];
 
     if(__childIcon__.classList[2] === 'dropdown-button-rotate-down'){
         return 'down';
     }else if(__childIcon__.classList[2] === 'dropdown-button-rotate-up'){
         return 'up';
     }else{
+        /* console.log(__childIcon__) */
         console.log('fuck!! ->'+__childIcon__.classList[1]);
     }
  
 }
 
+//FIX -> Functionality for Mobile UI
 //set the main todo checked status in Local storage
 function setCheckStatusInLocalStorage(todoToBeMarked, status) {
     let __todos__ = checkLocalStorage();
 
-    let todoText = todoToBeMarked.innerText.split(":")[0].trim(); 
-    let todoDueDate = todoToBeMarked.innerText.split(":")[1].trim(); 
+    let todoText = todoToBeMarked.textContent.split(":")[0].trim(); 
+    let todoDueDate = todoToBeMarked.textContent.split(":")[1].trim(); 
 
     for(let i=0;i<__todos__.length;i++){
     
@@ -470,6 +530,7 @@ function setCheckStatusInLocalStorage(todoToBeMarked, status) {
     setLocalStorage(__todos__);
 }
 
+//UNSURE ?
 //set the sub todo checked status in the Local storage
 function setSubTodoStatus(sub,main,status){
     let __todos__ = checkLocalStorage();
@@ -529,14 +590,15 @@ function checkLocalStorage() {
     return _todos_;
 }
 
+//FIX -> JS is async so passed values to avoid values being erased
 //adding todos to local storage 
-function addMainTodoToLocalStorage() {
+function addMainTodoToLocalStorage(_todoInputValue,_calendarInputValue) {
     let _TODO_ = checkLocalStorage() ;
 
     //creating a main_todo object and storing it to local storage
     let _mainTodo = {
-        'todo'    : todoinput.value.trim(),
-        'dueDate' : calendar.value.trim(),
+        'todo'    : _todoInputValue.trim(),
+        'dueDate' : _calendarInputValue.trim(),
         'checked' : 'false',
         'subTodos': [] 
     }; 
@@ -567,7 +629,7 @@ function getTodosFromLocalStorage() {
         }
 
         let __subList__ = $(_mainTodoDiv).children('.sub-todo-list')[0];
-        console.log(__subList__);
+       /*  console.log(__subList__); */
 
         //add subtodos to the main div; *if any*
         if(t.subTodos.length > 0){
@@ -606,25 +668,37 @@ function getTodosFromLocalStorage() {
     } );
 }
 
+//FIX -> Functionality corrected for mobile UI type
 //adding the sub todo of a main todo to local storage
-function addSubTodoToSessionStorage(_ancestor_, _subTask_) {
-    let __todoText__ = _ancestor_.childNodes[0].innerText.trim();
+function addSubTodoToSessionStorage(_para_, _subTask_) {
+    
+    /* console.log(_para_.textContent+_subTask_); */
+
+    //use textContent; innerText Doesnot work
+    // properly with spaces in middle
+    let __todoText__ = _para_.textContent.trim();
      
     let __todo__ = __todoText__.split(":")[0].trim();
     let __deudate__ = __todoText__.split(":")[1].trim();
+
+    /* console.log(__todo__+__deudate__); */
 
     //saving the status of the sub todo
     let subTodoObj =  { '_subTodo': _subTask_.trim(), '_checked':'false' };
     let __TODOS__ = checkLocalStorage();
 
     for(let i=0;i<__TODOS__.length;i++){
-    
+
+        /* console.log(__TODOS__[i].todo+__TODOS__[i].dueDate); */
+
         if((__TODOS__[i].todo === __todo__) && (__TODOS__[i].dueDate === __deudate__)){
-           
+           /* console.log(i); */
            __TODOS__[i].subTodos.push(subTodoObj);
             break;
         }
     }
+
+    /* console.log(__TODOS__); */
 
     /* sessionStorage.setItem('allTodo',JSON.stringify(__TODOS__)); */
     setLocalStorage(__TODOS__);
@@ -692,9 +766,9 @@ function markMainTodoCompleteIfNot(element) {
 }
 
 //delete the div- todo-main trash button clicked
-function deleteMainTodo( ancestor){
+function deleteMainTodo( _liAncestor){
 
-    var childrens = $(ancestor).children().not('.todo');
+    var childrens = $(_liAncestor).children('.sub-todo-list li');
 
     console.log(childrens);
 
@@ -704,22 +778,23 @@ function deleteMainTodo( ancestor){
         //then fade out the whole todo-main class div and remove
         $(childrens).slideUp(300,'linear',
                 function(){
-                    $(ancestor).fadeOut(400, function(){
-                        ancestor.remove();
+                    $(_liAncestor).fadeOut(400, function(){
+                        _liAncestor.remove();
                     });
                 }        
         );
         
     }else{
     
-        $(ancestor).fadeOut(400, function(){
+        $(_liAncestor).fadeOut(400, function(){
 
-            ancestor.remove();
+            _liAncestor.remove();
         }); 
         
     }
 }
 
+//FIX -- DONE ADDING NEW TODOS
 //create and return the todo-main class div
 function getMainTodoDiv(){
 
@@ -745,30 +820,36 @@ function getMainTodoDiv(){
     todoli.innerText = todoinput.value.trim()+': '+calendar.value;
     tododiv.appendChild(todoli);
 
+    //creating a container for buttons
+    const button_container_div = document.createElement('div');
+    button_container_div.classList.add('button-container-div-main');
+
     //add sub-task plus icon
     const add = document.createElement('button');
     add.classList.add('add-button');
     add.innerHTML= '<i class="fas fa-plus-square"></i>';
-    tododiv.appendChild(add);
+    button_container_div.appendChild(add);
 
     //check button
     const checked = document.createElement('button');
     checked.classList.add('checked-button');
     checked.innerHTML = '<i class="fas fa-check-square"></i>';
-    tododiv.appendChild(checked)
+    button_container_div.appendChild(checked)
 
     //add dropdown button
     const dropdownBtn = document.createElement('button');
     dropdownBtn.classList.add('dropdown-button');
     dropdownBtn.innerHTML = '<i class="fas fa-caret-down dropdown-button-rotate-down"></i>';
-    tododiv.appendChild(dropdownBtn);
+    button_container_div.appendChild(dropdownBtn);
 
     //trash button
     const trash = document.createElement('button');
     trash.classList.add('trash-button');
     trash.innerHTML = '<i class="fas fa-trash"></i>';
-    tododiv.appendChild(trash);
-
+    button_container_div.appendChild(trash);
+    
+    //MOD: button container to the todo div
+    tododiv.appendChild(button_container_div);
 
     todomaindiv.appendChild(tododiv);
 
@@ -915,31 +996,43 @@ function makeButtonDisabled(buttons){
     }
 }
 
+//FIX->Functionality for mobile UI
 //mark the sub-todos uncompleted when main todo uncompleted
-function markUncompleted(target){
-    const childtodos = target.childNodes
-    for(let i=1;i<childtodos.length;i++){
+function markUncompleted(liAncestor){
+    
+    const ulChild = $(liAncestor).find('.sub-todo-list')[0];
+    const childtodos = ulChild.childNodes;
+
+    const paraChild = $(liAncestor).find('.todo-item')[0].textContent;    
+
+    for(let i=0;i<childtodos.length;i++){
 
         //if the child todo has the class completed only then remove the class
         //here completed is the second classList item that's why index used is 1
-        if(childtodos[i].classList[1]){
+        if(childtodos[i].classList[1] === 'completed'){
             childtodos[i].classList.remove('completed');
-            setSubTodoStatus( childtodos[i].innerText,childtodos[0].innerText,'');
+            setSubTodoStatus( childtodos[i].textContent,paraChild,'');
         }
 
     }
 }
 
+//FIX->Functionality for mobile UI
 //mark the sub-todos completed when main todo completed
-function markAllSubToDoCompleted(target){
-    const childtodos = target.childNodes
-    for(let i=1;i<childtodos.length;i++){
+function markAllSubToDoCompleted(liAncestor){
+    
+    const ulChild = $(liAncestor).find('.sub-todo-list')[0];
+    const childtodos = ulChild.childNodes;
+
+    const paraChild = $(liAncestor).find('.todo-item')[0].textContent;
+
+    for(let i=0;i<childtodos.length;i++){
         
         childtodos[i].classList.add('completed');
 
-        console.log('marking all-'+childtodos[i].innerText+'-'+childtodos[0].innerText);
+        /* console.log('marking all-'+childtodos[i].textContent+'-'+paraChild.textContent); */
 
-        setSubTodoStatus( '\n'+childtodos[i].innerText+'\n',childtodos[0].innerText,'completed');
+        setSubTodoStatus( '\n'+childtodos[i].textContent+'\n',paraChild,'completed');
     }
 }
 
