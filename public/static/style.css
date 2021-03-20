@@ -325,7 +325,7 @@ form button:active{
 
 .completed{
     text-decoration: line-through;
-    color: #333;
+    color: #333 ;
     opacity: 0.5;
 }
 
@@ -441,10 +441,17 @@ select{
 
 
 @media all and (max-width:1024px){
+
+    /* *:not(.bl-box,.bl-dialog,.bl-header,.bl-content,.bl-footer){
+        max-width: 100% ;
+    }  */
+
     .dropdown-button{
        padding: 0.4vh 0.2vw ;
        font-size: 4vw;
     }
+
+    
     
     .bl-dialog{
         transform: scale(0.78);
@@ -458,7 +465,154 @@ select{
         font-size: 2rem;
         color: #fff;
     }
+
+    .todo-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .todo-list{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .list-item{
+        margin-bottom: 5vh;
+        width: 80%;
+        background: #f2f3f4;
+        border-radius: 10px;
+    }
+
+    .todo{
+        margin: 2vh 3vw 1vh 2vw ;
+        background: #fd8c4b;
+        display: flex;
+        justify-content: space-between;
+        box-sizing: initial;
+        padding: 1vh;
+        font-size: 2.5vh;
+        border-radius: 7px;
+        box-shadow: 0px 4px 4px #8a8a8a;
+    }
+
+    .button-container-div-main{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px 10px;
+    }
+
+    .button-container-div-main button{
+        padding: 1vh;
+        font-size: 2vh;
+        border-radius: 3px;
+    }
+    
+    .todo-item{
+        word-wrap: break-word;
+        color: #fafafa;
+        font-weight: 500;
+    }
+
+    form input[type='text']{
+        font-size: 2vh;
+    }
+
+    .sub-todo-list{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        margin: 0px 0px 2vh 10vw;
+    }
+
+    .todo-sub{
+        display: flex;
+        justify-content: space-between;
+        background: #FFB538;
+        margin: 1vh 0vw;
+        width: 70%;
+        border-radius: 5px;
+        box-sizing: initial;
+    }
+
+    .todo-sub-item{
+        color: #fafafa;
+        font-size: 2.2vh;
+        font-weight: 300;
+        padding-top: 2vh;
+        background: none !important;
+        box-sizing: initial;
+        word-wrap: break-word;
+    }
+
+    .todo-sub-item br{
+        display: none;
+    }
+
+    .button-container-div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: initial;
+    }
+
+    .button-container-div>button{
+        box-sizing: initial;
+    }
+
+    .button-container-div>button>i{
+        font-size: 2.5vh;
+    }
+
+    .sub-checked-button, .sub-trash-button {
+        height: 1vh;
+        width: 1vw;
+        margin: 1vh 0.5vw 1px 2vw ;
+        padding: 1vh 3.5vw 2.5vh 1.5vw ;
+        justify-content: center;
+        border-radius: 5px;
+        transform: scale(0.90);
+    }
+
+    .completed p{
+        color: #555 !important;
+    }
+
+    .list-item p{
+        line-height: 3vh;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   /* -------               -------*/
@@ -797,7 +951,7 @@ select{
 
     .logo-container{
        padding: 1.5rem;
-        background-image: linear-gradient(-135deg,#000 50%,#F3B035 50%);
+        background-image: linear-gradient(-135deg,#000 50%,#F59B3A 50%);
     }
 
     .git-logo{
@@ -815,8 +969,5 @@ select{
 
 }
 
-/* footer{
-    background-color: #333 !important;
-    color: #fff;
-} */
+
 
