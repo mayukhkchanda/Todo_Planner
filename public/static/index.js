@@ -228,12 +228,12 @@ function doRequired(event){
     if(targetitem.classList[0] === 'trash-button'){
         const liAncestor = $(targetitem).parents('.list-item')[0];
 
-        console.log(liAncestor);
+       /*  console.log(liAncestor); */
 
         const paraAncestor = $(liAncestor).find('.todo-item')[0];
 
         //delete from the local storage; targetitem is the button; its parent is the 'todo' div
-        deleteMainTodoFromLocalStorage(paraAncestor.innerText);
+        deleteMainTodoFromLocalStorage(paraAncestor.textContent);
 
         //delete the main todo
         deleteMainTodo(liAncestor);
@@ -254,6 +254,10 @@ function doRequired(event){
         //setting the focus to input of prompt initially
         $(subtodoinput).focus();
 
+
+        //FIX -> Functionality for MobileUI
+        //Sub todo ul list is displayed when the sub todo is added
+        //while the 
         //OK button
         subtodookbtn.addEventListener( 'click', function fucker(event){
             event.preventDefault();
@@ -265,9 +269,9 @@ function doRequired(event){
                 //make the input taking div disappear
                 $(subtododiv).toggleClass('bl-hidden');
                 
-                const parent = targetitem.parentElement;
+                /* const parent = targetitem.parentElement; */
                   
-                const ancestor =  $(parent).parents('.list-item'); //parent.parentElement.parentElement.parentElement;
+                const ancestor =  $(targetitem).parents('.list-item')[0]; 
                 
                 //get the sub todo to be added from the function
                 var tododiv = getSubTodoDiv(subtask);
@@ -276,11 +280,11 @@ function doRequired(event){
 
                 const sub_ul = $(ancestor).children('.sub-todo-list')[0];
 
-                /* console.log($(ancestor[0]).find('.todo-item')); */
+                /* console.log( sub_ul); */
 
                 sub_ul.appendChild(tododiv);
                 
-                const para = $(ancestor[0]).find('.todo-item')[0];
+                const para = $(ancestor).find('.todo-item')[0];
 
                 //*Local Storage*
                 addSubTodoToSessionStorage(para,subtask);
@@ -289,14 +293,20 @@ function doRequired(event){
                 subtodoinput.value = '';
 
                 //retriving the drop down toggle button 
-                const dropDownButton = $(ancestor[0]).find('.dropdown-button')[0]
+                const dropDownButton = $(ancestor).find('.dropdown-button')[0];
+                /* console.log(dropDownButton); */
+
+                //retrive the child icon of the drop down button
+                const dropDownIcon = $(dropDownButton).children()[0];
+                /* console.log(dropDownIcon);  */
 
                 let dropDownIconState = checkStateOfDropDownIcon(dropDownButton);
                 
                 //if the sub-todo class divs are slide up, then 
                 //slide the newly addes sub-todo after 1 sec
                 if(dropDownIconState === 'up') {
-                    $(tododiv).delay(1000).slideUp(500);
+                    rotateChildIcon(dropDownIcon);
+                    $(sub_ul).slideDown(500);
                 }
 
                 //remove the event listener that is registered to the ok
@@ -312,16 +322,24 @@ function doRequired(event){
 
     } 
 
+    //FIX->ADD Functionality
     //if user clicks on the sub-trash button of the sub-todo div
     else if(targetitem.classList[0] === 'sub-trash-button'){
        
-        let __mainToDoDiv__ = targetitem.parentElement.parentElement.childNodes[0];
+        let __subTodoPara__ = $(targetitem.parentElement).siblings('.todo-sub-item')[0];
+
+        const liAncestor = $(targetitem).parents('.list-item')[0];
+
+        const __mainTodoPara__ = $(liAncestor).find('.todo-item')[0];
 
         //delete the sub-todo from session storage
-        deleteSubTodoFromLocalStorage(targetitem.parentElement.innerText,__mainToDoDiv__.innerText);
+        deleteSubTodoFromLocalStorage(__subTodoPara__.textContent, __mainTodoPara__.textContent);
+
+        //get the sub todo list item to be deleted
+        const subTodoListElement = $(targetitem).parents('.todo-sub')[0];
 
         //fade and remove the sub-todo
-        deleteSubTodo(targetitem.parentElement);
+        deleteSubTodo(subTodoListElement);
 
     } 
 
@@ -379,41 +397,67 @@ function doRequired(event){
         }
     }
 
+    //Fix->Functionality for mobile ui
     //if user clicks on checked button of child todo
     else if( targetitem.classList[0] === 'sub-checked-button' ){
-        const subtodo = targetitem.parentElement;
-        subtodo.classList.toggle ('completed');
 
-        const _todoMainDiv_ = subtodo.parentElement.childNodes[0];
+        const liAncestor = $(targetitem).parents('.list-item')[0];
 
-        setSubTodoStatus(subtodo.innerText, _todoMainDiv_.innerText, subtodo.classList[1]);
+        //get the sub todo list item
+        const subtodo = $(targetitem).parents('.todo-sub')[0];
+        /* console.log(subtodo); */
+        subtodo.classList.toggle('completed');
+
+        /* const _todoMainDiv_ = subtodo.parentElement.childNodes[0]; */
+        const _todoMainDiv_ = $(liAncestor).find('.todo-item')[0];
+        /* console.log(_todoMainDiv_.textContent); */
+
+        setSubTodoStatus(subtodo.textContent, _todoMainDiv_.textContent, subtodo.classList[1]);
+
+        //get the main todo(class with 'todo-main')
+        const maintodo = $(liAncestor).find('.todo-main')[0];
+        
+        //get all the buttons in the main todo
+        const mainTodoButtons = maintodo.getElementsByTagName('button');
+
+        //get the main todo para element 
+        const paraEle = $(liAncestor).find('.todo-item')[0];
 
         let bool =  checkAllSubTodoDone(subtodo.parentElement);
         if(bool){
-            console.log(subtodo.parentElement);
-            const maintodo = subtodo.parentElement;
-            maintodo.childNodes[0].classList.add('completed');
-            makeButtonDisabled(maintodo.getElementsByTagName('button'));
+            /* console.log(subtodo.parentElement); */
 
-            setCheckStatusInLocalStorage( _todoMainDiv_, 'true' );
+            //mark main todo completed
+            maintodo.classList.add('completed');
 
-        }else {
-            const maintodo = subtodo.parentElement;
-            maintodo.childNodes[0].classList.remove('completed');
-            makeButtonEnabled(maintodo.getElementsByTagName('button'));
+            //make the add button disabled
+            makeButtonDisabled(mainTodoButtons);
 
-            setCheckStatusInLocalStorage( _todoMainDiv_, 'false' );
+            setCheckStatusInLocalStorage( paraEle, 'true' );
 
+        }        
+        else {
+           /*  const maintodo = subtodo.parentElement;
+            maintodo.childNodes[0].classList.remove('completed'); */
+
+            //mark main todo uncomplete
+            maintodo.classList.remove('completed'); 
+
+            //make the add button enabled
+            makeButtonEnabled(mainTodoButtons);
+
+            setCheckStatusInLocalStorage( paraEle, 'false' );
         }
     }
 
-    
+    //FIX-> Functionality of mobile UI
     //if user clicks on dropdown button
     else if(targetitem.classList[0] === 'dropdown-button'){
 
-        const ancestor = targetitem.parentElement.parentElement;
-
-        const childIcon = $(targetitem).children();
+       /*  const ancestor = targetitem.parentElement.parentElement; */
+       const ancestor = $(targetitem).parents('.list-item');
+       
+       const childIcon = $(targetitem).children();
 
         //delegate the handle to another function
         toggleShowSubTodos(ancestor,childIcon);
@@ -422,17 +466,27 @@ function doRequired(event){
 
 }
 
+//FIX -> Functionality for Mobile UI
 //delete todo from Local storage
-function deleteSubTodoFromLocalStorage(__subTodoText__,__mainTodoText__) {
+function deleteSubTodoFromLocalStorage(__subTodoText__, __mainTodoText__) {
     
+    let _sub_ = __subTodoText__.split('\n');
 
-    __subTodoText__ = __subTodoText__.split('\n')[1];
+    //getting the sub-todo text irrespective of how many line breaks present
+    for(const s of _sub_) {
+        if(s){
+            __subTodoText__ = s.trim();
+        }
+    }
+
+    /* console.log(__subTodoText__); */
    
     let __todo__ = __mainTodoText__.split(":")[0].trim();
     let __deudate__ = __mainTodoText__.split(":")[1].trim();
 
     let __TodosArr__ = checkLocalStorage();
 
+    //used to check if the element is found or not
     let found = false;
 
     for(let i=0;i<__TodosArr__.length;i++){
@@ -445,13 +499,13 @@ function deleteSubTodoFromLocalStorage(__subTodoText__,__mainTodoText__) {
         // get the index which matches the todo
         if((__TodosArr__[i].todo === __todo__) && (__TodosArr__[i].dueDate === __deudate__)){
             
-            console.log(__TodosArr__[i]);
+            /* console.log(__TodosArr__[i]); */
 
             let __subTodoArr__= __TodosArr__[i].subTodos;
 
             for(let j=0;j<__subTodoArr__.length;j++){
 
-                console.log(__subTodoArr__[j]);
+                /* console.log(__subTodoArr__[j]); */
 
                 //delete the sub todo present
                 if(__subTodoArr__[j]._subTodo === __subTodoText__){
@@ -492,6 +546,7 @@ function deleteMainTodoFromLocalStorage(__todoText__) {
     setLocalStorage(__TodosArr__);
 }
 
+//NO CHANGE
 //check if the drop down icon state is up or down
 function checkStateOfDropDownIcon(__drpDwnbutton__) {
     
@@ -530,7 +585,7 @@ function setCheckStatusInLocalStorage(todoToBeMarked, status) {
     setLocalStorage(__todos__);
 }
 
-//UNSURE ?
+//FIX-> Functionality for Mobile UI
 //set the sub todo checked status in the Local storage
 function setSubTodoStatus(sub,main,status){
     let __todos__ = checkLocalStorage();
@@ -543,6 +598,8 @@ function setSubTodoStatus(sub,main,status){
            sub = s.trim();
         }
     }
+
+    /* console.log(sub); */
 
     let __todo__    = main.split(':')[0].trim();
     let __deudate__ = main.split(':')[1].trim();
@@ -572,12 +629,14 @@ function setSubTodoStatus(sub,main,status){
     //set the changes back to local storage
     setLocalStorage(__todos__);
 }
- 
+
+//NO CHANGE
 //set todos back to local storage
 function setLocalStorage(__ToDos__) {
     localStorage.setItem( 'allTodo', JSON.stringify(__ToDos__) );
 }
 
+//NO CHANGE
 //check if todo already there in local storage
 function checkLocalStorage() {
     let _todos_ ;
@@ -609,6 +668,7 @@ function addMainTodoToLocalStorage(_todoInputValue,_calendarInputValue) {
 
 }
 
+//FIX -> Functionality for MobileUI
 //getting todos from local storage
 //also appending to the ul element
 function getTodosFromLocalStorage() {
@@ -631,12 +691,12 @@ function getTodosFromLocalStorage() {
         let __subList__ = $(_mainTodoDiv).children('.sub-todo-list')[0];
        /*  console.log(__subList__); */
 
-        //add subtodos to the main div; *if any*
+        //add subtodos to the sub ul todo list; *if any*
         if(t.subTodos.length > 0){
             let _subTodos_ = t.subTodos;
 
-            //for each of the sub-todos; create a sub-todo div and append it to 
-            //as a child of  main todo
+            //for each of the sub-todos; create a sub-todo li item
+            // and append it to as a child of  main todo
             _subTodos_.forEach( ( s )=> {
                     //s is an object; _subTodo = todo & _checked = status
                     //getting the sub-todo div element
@@ -651,7 +711,6 @@ function getTodosFromLocalStorage() {
                     /* _mainTodoDiv.appendChild(_subTodoDiv_); */
 
                     __subList__.appendChild(_subTodoDiv_);
-
 
              } );
 
@@ -704,6 +763,7 @@ function addSubTodoToSessionStorage(_para_, _subTask_) {
     setLocalStorage(__TODOS__);
 }
 
+//NO CHANGE
 //rotate child icon
 function rotateChildIcon(childIcon){
     
@@ -716,33 +776,53 @@ function rotateChildIcon(childIcon){
     }
 }
 
+//FIX-> Functionality for MobileUI
 //toggle slide the sub todos-if it contains child todos
 function toggleShowSubTodos(ancestor,childIcon) {
    
-    var childrens = $(ancestor).children().not('.todo');
+    var ulListItem = $(ancestor).find('.sub-todo-list');/* .not('.todo'); */
+
+    /* console.log(childrens); */
+
+    var subTodoListItems = $(ulListItem).children();
+
+    /* console.log(subTodoListItems); */
 
     //check if Child todos are present
-    if(childrens.length){
+    if( subTodoListItems.length){
 
         rotateChildIcon(childIcon[0]);
-        $(childrens).slideToggle(600,'linear');
+        //stop the execution of queued events
+        $(ulListItem).stop().slideToggle(1000);
     
     }
 }
 
+//Fix -> Functionality for MobileUI
 //delete sub todo- sub-todo trash button clicked
 function deleteSubTodo(element) {
 
     $(element).fadeOut(400, function(){
 
-        //get the main todo element 
-        let todoMainDiv = element.parentElement;
+        //get the todo list item element 
+        let liAncestor = $(element).parents('.list-item')[0];
+
+        //get the todo main div
+        let todoMainDiv = $(liAncestor).find('.todo-main')[0];
+
+        //get the buttons of the todo main div
+        let buttons = $(todoMainDiv).find('button');
+
+        //get the sub todo ul list
+        let ulSubList = $(liAncestor).find('.sub-todo-list')[0];
+
+        /* console.log(ulSubList); */
 
         //remove the sub-todo element
         element.remove();
             
             //check if the remaining sub-todo elements are completed or not
-            let isTrue =  checkAllSubTodoDone(todoMainDiv);
+            let isTrue =  checkAllSubTodoDone(ulSubList);
 
             if(isTrue){
                 /* console.log('YeS!'); */
@@ -750,33 +830,37 @@ function deleteSubTodo(element) {
                 markMainTodoCompleteIfNot(todoMainDiv);
                 
                 //also make the button disabled
-                makeButtonDisabled(todoMainDiv.childNodes[0].getElementsByTagName('button'));
+                makeButtonDisabled(buttons);
                 
             }
     });
 }
 
+//FIX-> Functionality for MobileUI
 //mark the main todo complete if not already completed
-function markMainTodoCompleteIfNot(element) {
-    let mainTodoDiv = element.childNodes[0];
+function markMainTodoCompleteIfNot(mainTodoDiv) {
+    /* let mainTodoDiv = element.childNodes[0]; */
     if(!(mainTodoDiv.classList[1] === 'completed')){
         mainTodoDiv.classList.add('completed');
         setCheckStatusInLocalStorage(mainTodoDiv,'true');
     }
 }
 
+//FIX-> Functionality for mobile UI
 //delete the div- todo-main trash button clicked
 function deleteMainTodo( _liAncestor){
 
-    var childrens = $(_liAncestor).children('.sub-todo-list li');
+    const subUlListElement = $(_liAncestor).find('.sub-todo-list'); 
 
-    console.log(childrens);
+    const childrens = $(_liAncestor).find('.sub-todo-list li');
+
+    /* console.log(childrens); */
 
     if(childrens.length){
 
         //if child todos are present then slide them up
         //then fade out the whole todo-main class div and remove
-        $(childrens).slideUp(300,'linear',
+        $(subUlListElement).slideUp(700,'linear',
                 function(){
                     $(_liAncestor).fadeOut(400, function(){
                         _liAncestor.remove();
@@ -862,6 +946,7 @@ function getMainTodoDiv(){
     return li;
 }
 
+//FIX -- UL list item for sub todos
 //create and return the main todo div; JS does not support function overloading
 function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
 
@@ -931,6 +1016,7 @@ function getMainTodoDivFromSessionStorage(todoValue,calendarValue){
     return li;
 }
 
+//FIX -- A button container div to flex the button
 //create a subtodo div
 function getSubTodoDiv( subtask){
     
@@ -978,6 +1064,7 @@ function getSubTodoDiv( subtask){
     return tododiv;
 }
 
+//NO CHANGE
 //make add button enabled
 function makeButtonEnabled(buttons){
     for(let i=0;i<buttons.length;i++){
@@ -986,6 +1073,8 @@ function makeButtonEnabled(buttons){
         }
     }
 }
+
+//NO CHANGE
 
 //make add button disable
 function makeButtonDisabled(buttons){
@@ -1036,11 +1125,13 @@ function markAllSubToDoCompleted(liAncestor){
     }
 }
 
+//NO CHANGE
 //delegates the call to checkCompleted
 function checkAllSubTodoDone(target){
     
-    //get all the children of todo-main div
-    const childtodos = target.childNodes
+    //get all the children of sub ul list
+    const childtodos = target.childNodes;
+    /* console.log(childtodos); */
 
     //check if all the sub-todo's are checked
     if(checkCompleted(childtodos)){
@@ -1052,10 +1143,11 @@ function checkAllSubTodoDone(target){
     }
 }
 
+//NO CHANGE
 //check if sub-todos are completed
 function checkCompleted(childtodos){
-    let bool = false;
-    for(let i=1;i<childtodos.length;i++){
+    
+    for(let i=0;i<childtodos.length;i++){
         
         if(!childtodos[i].classList[1] ){
             return false;
