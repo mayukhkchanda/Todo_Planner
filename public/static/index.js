@@ -105,7 +105,7 @@ $('html').click(function(event){
 
 //functions
 
-//Apply the select filter //--- Need To FIX(NTF)
+//Apply the select filter
 function applyFilter(){
     var selectValue = event.target.value;
 
@@ -662,7 +662,9 @@ function addMainTodoToLocalStorage(_todoInputValue,_calendarInputValue) {
         'subTodos': [] 
     }; 
 
-    _TODO_.push(_mainTodo);
+    //used un-shift instead of push
+    //store the new element at first position
+    _TODO_.unshift(_mainTodo);
 
     setLocalStorage(_TODO_);
 
@@ -1075,7 +1077,6 @@ function makeButtonEnabled(buttons){
 }
 
 //NO CHANGE
-
 //make add button disable
 function makeButtonDisabled(buttons){
     for(let i=0;i<buttons.length;i++){

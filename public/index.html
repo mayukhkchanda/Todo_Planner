@@ -24,26 +24,33 @@
         </div>
     </a>
 
-        <header class="header-container">
-            <h1>Todo Planner</h1>
-            <i class="fas fa-tasks"></i>
-        </header>
+    <header class="header-container">
+        <h1>Todo Planner</h1>
+        <i class="fas fa-tasks"></i>
+    </header>
 
-    <form onsubmit="return false;" >
-            <input class="todo-input" type="text" placeholder="Let's plan my tasks...">
-            <input type="text" id="datepicker" placeholder="Deadline">
-            <button class='todo-calendar'><i class="far fa-calendar-alt"></i></button>
-            <button class="todo-button" type="submit"><i class="fas fa-plus-square"></i></button>
+    <div class="form-container">
 
-            <div class="select"> 
-                <select class="select-filter">
-                    <option value="all">All</option>
-                    <option value="completed">Completed</option>
-                    <option value="uncompleted">Uncompleted</option>
-                </select>
-            </div>
+        <form onsubmit="return false;" >
+                <input class="todo-input" type="text" placeholder="Let's plan my tasks...">
 
-    </form>
+                <div class="calander-container">
+                    <input type="text" id="datepicker" placeholder="Deadline">           
+                    <button class='todo-calendar'><i class="far fa-calendar-alt"></i></button>
+                </div>
+                <button class="todo-button" type="submit"><i class="fas fa-plus-square"></i></button>
+
+                <div class="select"> 
+                    <select class="select-filter">
+                        <option value="all">All</option>
+                        <option value="completed">Completed</option>
+                        <option value="uncompleted">Uncompleted</option>
+                    </select>
+                </div>
+
+        </form>
+
+    </div>
 
     <div class="todo-container">
         <ul class="todo-list"></ul>
