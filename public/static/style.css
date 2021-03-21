@@ -435,30 +435,129 @@ select{
     color: #fff;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /* -------                    ------*/
  /* -------      Media Query   ------*/
 /* -------   for tabs/ipads   ------*/
 
 
-@media all and (max-width:1024px){
+@media all and (max-width:1024px  ) and (min-width:600px) {
 
     /* *:not(.bl-box,.bl-dialog,.bl-header,.bl-content,.bl-footer){
         max-width: 100% ;
     }  */
+
+
+    .header-container {
+        font-size: 3vh;
+    }
+    .header-container i{
+        padding-left: 2vw;
+        padding-top: 0.8vh;
+        font-size: 3.9vh;
+    }
 
     .dropdown-button{
        padding: 0.4vh 0.2vw ;
        font-size: 4vw;
     }
 
+    .form-container{
+        width: 90%;
+        margin-left: 6vw;
+
+    }
+
+    form{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        box-sizing: initial;
+        align-items: center ;
+    }
     
-    
+    form>*{
+        width:80%;
+        margin: 0px;
+        padding: 0px;
+        position: relative;
+    }
+
+    .calander-container{
+        display: flex;
+    }
+
+    #datepicker{
+        font-size: 2vh;
+    }
+
+    .todo-calendar{
+        padding: 0.6vh 1vw 0.6vh 0.6vw;
+    }
+
+    .fa-calendar-alt{
+        font-size: 3vh;
+    }
+
+
+    .todo-input{
+        margin-left: 1vw;
+        left:10%;
+        padding: 1vh 1.5vw ;
+        font-size: 2vh;
+    }
+
+    .todo-button{
+        left:10%;
+        border-radius: 9pc;
+    }
+
+    .todo-button > i{
+        font-size: 3.85vh;
+    }
+
+    .select{
+        left: 2%;
+    }
+
+    select{
+        background-color: #fff;
+    }
+
+    .select-filter{
+        width: 30vw;
+        font-size: 2vh;
+    }
+
+    .select::after{
+        padding: 0.25vh 0.25vw ;
+        font-size: 4vw;
+    }
+
     .bl-dialog{
         transform: scale(0.78);
     }
 
     .logo-container{
-        background-image: linear-gradient(-135deg,#000 50%,#F6943F 50%);
+        background-image: linear-gradient(-135deg,#000 50%,#F4A637 50%);
     }
 
     .fa-github{
@@ -481,6 +580,7 @@ select{
 
 
     .list-item{
+        padding: 0px 0px 1vh 0px;
         margin-bottom: 5vh;
         width: 80%;
         background: #f2f3f4;
@@ -584,6 +684,10 @@ select{
 
     .list-item p{
         line-height: 3vh;
+    }
+
+    .todo-container{
+        margin-top: 5vh;
     }
 }
 
@@ -965,7 +1069,9 @@ select{
         color: #fff;
     }
 
-    
+    select{
+        background-color: #fff !important; 
+    }
 
 }
 
