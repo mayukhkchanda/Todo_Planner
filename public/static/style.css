@@ -436,10 +436,9 @@ select{
 }
 
 
-
-
-
-
+  /* -------                             ------*/
+ /* -------         Media Query         ------*/
+/* -------   for full screen devices   ------*/
 @media all and (min-width:1025px){
 
     .todo-container{
@@ -583,31 +582,9 @@ select{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   /* -------                    ------*/
  /* -------      Media Query   ------*/
 /* -------   for tabs/ipads   ------*/
-
-
 @media all and (max-width:1024px  ) and (min-width:600px) {
 
     /* *:not(.bl-box,.bl-dialog,.bl-header,.bl-content,.bl-footer){
@@ -840,37 +817,9 @@ select{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   /* -------               -------*/
  /* -------  Media Query  -------*/
 /* -------   for Phones -------*/
-
 @media all and (max-width:600px){
 
     /*Removes xtra white space in the right side*/
