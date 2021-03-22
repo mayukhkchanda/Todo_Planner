@@ -12,7 +12,7 @@ const calendarBtn = document.querySelector('.todo-calendar');
 const addbutton = document.querySelector(".add-button");
 const selectBtn = document.querySelector("#select-dropdown-button");
 const selectFeild = document.querySelector(".select-filter");
-
+const audio =  document.getElementById('audio');
 
 //sub-todo's feilds
 const subtododiv = document.querySelector('div[class^="bl-box"]');
@@ -362,6 +362,11 @@ function doRequired(event){
         //as the classList is being toggled; so check if completed or not
         //FIX->Functionality for Mobile UI
         if(subtodo.classList[1] === 'completed'){
+
+            //if user completes the task 
+            //then play a audio
+            playAudio();
+
             markAllSubToDoCompleted(liAncestor);
             
             /* const maintodo = subtodo.parentElement.childNodes[0];
@@ -427,6 +432,10 @@ function doRequired(event){
         if(bool){
             /* console.log(subtodo.parentElement); */
 
+            //if user completes all the sub 
+            //task then play a audio
+            playAudio();
+
             //mark main todo completed
             maintodo.classList.add('completed');
 
@@ -465,6 +474,19 @@ function doRequired(event){
     }
 
 }
+
+//function for playing audio when
+//checked button is clicked
+function playAudio(){
+
+    if(!audio.paused){
+        audio.play();
+    }else{
+        audio.pause();
+        audio.play();
+    }
+    
+ }
 
 //FIX -> Functionality for Mobile UI
 //delete todo from Local storage

@@ -436,6 +436,10 @@ select{
 }
 
 
+.audio-container{
+    display: none;
+}
+
   /* -------                             ------*/
  /* -------         Media Query         ------*/
 /* -------   for full screen devices   ------*/
@@ -796,7 +800,7 @@ select{
     .sub-checked-button, .sub-trash-button {
         height: 1vh;
         width: 1vw;
-        margin: 1vh 0.5vw 1px 2vw ;
+        margin: 1vh 0.5vw 1px 1vw ;
         padding: 1vh 3.5vw 2.5vh 1.5vw ;
         justify-content: center;
         border-radius: 5px;
