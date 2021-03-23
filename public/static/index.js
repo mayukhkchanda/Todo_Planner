@@ -14,6 +14,12 @@ const selectBtn = document.querySelector("#select-dropdown-button");
 const selectFeild = document.querySelector(".select-filter");
 const audio =  document.getElementById('audio');
 
+//audio files
+const audioSrc = [
+    'success-audio.mp3',
+    'warning-audio.mp3'
+];
+
 //sub-todo's feilds
 const subtododiv = document.querySelector('div[class^="bl-box"]');
 const subtodoinput = document.querySelector('.bl-prompt');
@@ -228,15 +234,48 @@ function doRequired(event){
     if(targetitem.classList[0] === 'trash-button'){
         const liAncestor = $(targetitem).parents('.list-item')[0];
 
+        //play warning audio
+        playAudio(audioSrc[1]);
+
+        swal({
+            title: "Are you sure?",
+            text: "Deleted items cannot be recovered.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+
+            //if user accepts to delete the file
+            if (willDelete) {
+              /* swal("Poof! Your imaginary file has been deleted!", {
+                icon: "success",
+              }); */
+
+                const paraAncestor = $(liAncestor).find('.todo-item')[0];
+
+                //delete from the local storage; targetitem is the button; its parent is the 'todo' div
+                deleteMainTodoFromLocalStorage(paraAncestor.textContent);
+
+                //delete the main todo
+                deleteMainTodo(liAncestor);
+
+            }/*  else {
+              swal("Your imaginary file is safe!");
+            } */
+
+          });
+
        /*  console.log(liAncestor); */
 
-        const paraAncestor = $(liAncestor).find('.todo-item')[0];
+       /*  const paraAncestor = $(liAncestor).find('.todo-item')[0];
 
         //delete from the local storage; targetitem is the button; its parent is the 'todo' div
         deleteMainTodoFromLocalStorage(paraAncestor.textContent);
 
         //delete the main todo
-        deleteMainTodo(liAncestor);
+        deleteMainTodo(liAncestor); */
+
     }
 
     //FIX->ADD Functionality
@@ -325,8 +364,42 @@ function doRequired(event){
     //FIX->ADD Functionality
     //if user clicks on the sub-trash button of the sub-todo div
     else if(targetitem.classList[0] === 'sub-trash-button'){
+        
+        //play warning audio
+        playAudio(audioSrc[1]);
+
+        swal({
+            title: "Are you sure?",
+            text: "Deleted items cannot be recovered.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+
+            //if user accepts to delete the file
+            if (willDelete) {
+                let __subTodoPara__ = $(targetitem.parentElement).siblings('.todo-sub-item')[0];
+
+                const liAncestor = $(targetitem).parents('.list-item')[0];
+        
+                const __mainTodoPara__ = $(liAncestor).find('.todo-item')[0];
+        
+                //delete the sub-todo from session storage
+                deleteSubTodoFromLocalStorage(__subTodoPara__.textContent, __mainTodoPara__.textContent);
+        
+                //get the sub todo list item to be deleted
+                const subTodoListElement = $(targetitem).parents('.todo-sub')[0];
+        
+                //fade and remove the sub-todo
+                deleteSubTodo(subTodoListElement);
+
+            }
+
+          });
        
-        let __subTodoPara__ = $(targetitem.parentElement).siblings('.todo-sub-item')[0];
+       
+        /* let __subTodoPara__ = $(targetitem.parentElement).siblings('.todo-sub-item')[0];
 
         const liAncestor = $(targetitem).parents('.list-item')[0];
 
@@ -339,7 +412,7 @@ function doRequired(event){
         const subTodoListElement = $(targetitem).parents('.todo-sub')[0];
 
         //fade and remove the sub-todo
-        deleteSubTodo(subTodoListElement);
+        deleteSubTodo(subTodoListElement); */
 
     } 
 
@@ -363,11 +436,7 @@ function doRequired(event){
         //FIX->Functionality for Mobile UI
         if(subtodo.classList[1] === 'completed'){
 
-            swal("Good job!", "Task Completed", "success");
-
-            //if user completes the task 
-            //then play a audio
-            playAudio();
+            successAlert();            
 
             markAllSubToDoCompleted(liAncestor);
             
@@ -434,12 +503,14 @@ function doRequired(event){
         if(bool){
             /* console.log(subtodo.parentElement); */
 
-            //adding a sweet alert 
+            successAlert();
+
+            /* //adding a sweet alert 
             swal("Good job!", "Task Completed", "success");
 
             //if user completes all the sub 
             //task then play a audio
-            playAudio();
+            playAudio(); */
 
             //mark main todo completed
             maintodo.classList.add('completed');
@@ -480,9 +551,24 @@ function doRequired(event){
 
 }
 
+
+//give a success alert and play audio
+function successAlert(){
+    //adding a sweet alert 
+    swal("Good job!", "Task Completed", "success");
+
+    //if user completes all the sub 
+    //task then play a audio
+    playAudio(audioSrc[0]);
+
+}
+
 //function for playing audio when
 //checked button is clicked
-function playAudio(){
+function playAudio(src){
+
+    //set the source and play accordingly
+    audio.src = './audio/'+src;
 
     if(!audio.paused){
         audio.play();
@@ -831,7 +917,7 @@ function toggleShowSubTodos(ancestor,childIcon) {
 //delete sub todo- sub-todo trash button clicked
 function deleteSubTodo(element) {
 
-    $(element).fadeOut(400, function(){
+    $(element).fadeOut(600, function(){
 
         //get the todo list item element 
         let liAncestor = $(element).parents('.list-item')[0];
@@ -854,6 +940,9 @@ function deleteSubTodo(element) {
             let isTrue =  checkAllSubTodoDone(ulSubList);
 
             if(isTrue){
+
+                
+
                 /* console.log('YeS!'); */
                 //if true mark the main todo completed
                 markMainTodoCompleteIfNot(todoMainDiv);
@@ -868,8 +957,14 @@ function deleteSubTodo(element) {
 //FIX-> Functionality for MobileUI
 //mark the main todo complete if not already completed
 function markMainTodoCompleteIfNot(mainTodoDiv) {
+    
     /* let mainTodoDiv = element.childNodes[0]; */
     if(!(mainTodoDiv.classList[1] === 'completed')){
+
+        //give sucess notification
+        //if todo main not already completed
+        successAlert();
+
         mainTodoDiv.classList.add('completed');
         setCheckStatusInLocalStorage(mainTodoDiv,'true');
     }

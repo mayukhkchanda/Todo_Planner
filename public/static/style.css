@@ -594,7 +594,7 @@ select{
   /* -------                    ------*/
  /* -------      Media Query   ------*/
 /* -------   for tabs/ipads   ------*/
-@media all and (max-width:1024px  ) and (min-width:600px) {
+@media all and (max-width:1024px  ) and (min-width:601px) {
 
     /* *:not(.bl-box,.bl-dialog,.bl-header,.bl-content,.bl-footer){
         max-width: 100% ;
@@ -687,7 +687,8 @@ select{
     }
 
     .bl-dialog{
-        transform: scale(0.78);
+        top: 30% !important;
+        transform: scale(0.90);
     }
 
     .logo-container{
@@ -710,6 +711,8 @@ select{
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        height: 40%;
+        width: 90%;
     }
 
 
@@ -760,7 +763,7 @@ select{
         flex-direction: column;
         justify-content: center;
         width: 100%;
-        margin: 0px 0px 2vh 10vw;
+        margin: 0px 0px 2vh 6.9vw;
     }
 
     .todo-sub{
@@ -768,7 +771,7 @@ select{
         justify-content: space-between;
         background: #FFB538;
         margin: 1vh 0vw;
-        width: 70%;
+        width: 80%;
         border-radius: 5px;
         box-sizing: initial;
     }
@@ -805,7 +808,7 @@ select{
     .sub-checked-button, .sub-trash-button {
         height: 1vh;
         width: 1vw;
-        margin: 1vh 0.5vw 1px 1vw ;
+        margin: 1vh 0.5vw 1px 0.5vw ;
         padding: 1vh 3.5vw 2.5vh 1.5vw ;
         justify-content: center;
         border-radius: 5px;
@@ -1097,6 +1100,7 @@ select{
     }
 
     .bl-dialog{
+        top: 20% !important;
         transform: scale(0.50);
     }
 
@@ -1158,6 +1162,10 @@ select{
         font-size: 15px;
         margin: 10px 0px;
         padding: 0px 5px;
+    }
+
+    .sub-trash-button{
+        background:#f63e0b;  
     }
 
     .logo-container{
