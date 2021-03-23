@@ -363,6 +363,8 @@ function doRequired(event){
         //FIX->Functionality for Mobile UI
         if(subtodo.classList[1] === 'completed'){
 
+            swal("Good job!", "Task Completed", "success");
+
             //if user completes the task 
             //then play a audio
             playAudio();
@@ -431,6 +433,9 @@ function doRequired(event){
         let bool =  checkAllSubTodoDone(subtodo.parentElement);
         if(bool){
             /* console.log(subtodo.parentElement); */
+
+            //adding a sweet alert 
+            swal("Good job!", "Task Completed", "success");
 
             //if user completes all the sub 
             //task then play a audio

@@ -530,6 +530,11 @@ select{
         box-sizing: initial;
     }
 
+    
+    .todo-sub p{
+        line-height: 2.8vh;
+    }
+
     .todo-sub-item{
         line-height: 2em;
         padding: 1.5vh 0.5vw;
@@ -1174,7 +1179,10 @@ select{
     select{
         background-color: #fff !important; 
     }
-
+    
+    .completed p{
+        color: #555 !important;
+    }
 }
 
 
