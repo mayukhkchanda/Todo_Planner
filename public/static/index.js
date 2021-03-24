@@ -238,7 +238,7 @@ function doRequired(event){
         playAudio(audioSrc[1]);
 
         swal({
-            title: "Are you sure?",
+            title: "Are you sure?⚠️",
             text: "Deleted items cannot be recovered.",
             icon: "warning",
             buttons: true,
@@ -248,10 +248,7 @@ function doRequired(event){
 
             //if user accepts to delete the file
             if (willDelete) {
-              /* swal("Poof! Your imaginary file has been deleted!", {
-                icon: "success",
-              }); */
-
+              
                 const paraAncestor = $(liAncestor).find('.todo-item')[0];
 
                 //delete from the local storage; targetitem is the button; its parent is the 'todo' div
@@ -260,21 +257,9 @@ function doRequired(event){
                 //delete the main todo
                 deleteMainTodo(liAncestor);
 
-            }/*  else {
-              swal("Your imaginary file is safe!");
-            } */
+            }
 
           });
-
-       /*  console.log(liAncestor); */
-
-       /*  const paraAncestor = $(liAncestor).find('.todo-item')[0];
-
-        //delete from the local storage; targetitem is the button; its parent is the 'todo' div
-        deleteMainTodoFromLocalStorage(paraAncestor.textContent);
-
-        //delete the main todo
-        deleteMainTodo(liAncestor); */
 
     }
 
@@ -369,7 +354,7 @@ function doRequired(event){
         playAudio(audioSrc[1]);
 
         swal({
-            title: "Are you sure?",
+            title: "Are you sure?⚠️",
             text: "Deleted items cannot be recovered.",
             icon: "warning",
             buttons: true,
@@ -399,20 +384,6 @@ function doRequired(event){
           });
        
        
-        /* let __subTodoPara__ = $(targetitem.parentElement).siblings('.todo-sub-item')[0];
-
-        const liAncestor = $(targetitem).parents('.list-item')[0];
-
-        const __mainTodoPara__ = $(liAncestor).find('.todo-item')[0];
-
-        //delete the sub-todo from session storage
-        deleteSubTodoFromLocalStorage(__subTodoPara__.textContent, __mainTodoPara__.textContent);
-
-        //get the sub todo list item to be deleted
-        const subTodoListElement = $(targetitem).parents('.todo-sub')[0];
-
-        //fade and remove the sub-todo
-        deleteSubTodo(subTodoListElement); */
 
     } 
 
@@ -555,7 +526,7 @@ function doRequired(event){
 //give a success alert and play audio
 function successAlert(){
     //adding a sweet alert 
-    swal("Good job!", "Task Completed", "success");
+    swal("Good job! 👏", "Task Completed ✔️", "success");
 
     //if user completes all the sub 
     //task then play a audio
