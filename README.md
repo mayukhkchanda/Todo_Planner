@@ -1,6 +1,8 @@
 # **Todo Planner** 
 ## A simple Todo Planner app built with Vanilla JS and JQuery
 
+Live Demo Link: https://to-do-planner.herokuapp.com/
+
 * ### Project Structure:
     * **app.js** -> Uses express to run the server for hosting the static files in the _public_ folder. Default port is 5505.
     * **public(_folder_)** :  
